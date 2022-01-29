@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <p className="flex text-3xl">Pokédex</p>
     </div>
   )
