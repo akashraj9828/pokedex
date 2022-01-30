@@ -1,4 +1,5 @@
 export interface RootPokemon {
+  loading: boolean
   abilities: Ability2[]
   base_experience: number
   forms: Ability[]

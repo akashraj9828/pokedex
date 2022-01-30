@@ -14,6 +14,7 @@ const MainLayout = ({ children }) => {
         </ErrorBoundaryWrapper> */}
       </div>
       <div
+        id={'pp'}
         ref={contentRef}
         className="flex-column z-50 h-[calc(100vh_-_64px)] w-full overflow-auto p-4"
         // style={config.content_style_overwride || {}}

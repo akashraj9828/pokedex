@@ -18,9 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     store.dispatch(fetchPokemonTypesList() as any)
     store.dispatch(fetchPokemonList() as any)
-    store.dispatch(fetchPokemonByName('eevee') as any)
-    store.dispatch(fetchPokemonEvolutionById(133) as any)
-    store.dispatch(fetchPokemonSpeciesByName('eevee') as any)
+    // store.dispatch(fetchPokemonByName('eevee') as any)
+    // store.dispatch(fetchPokemonEvolutionById(133) as any)
+    // store.dispatch(fetchPokemonSpeciesByName('eevee') as any)
   }, [])
 
   return (
