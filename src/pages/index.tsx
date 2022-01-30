@@ -48,16 +48,17 @@ export default function Home() {
       <div className="w-full">
         {/* <Temp /> */}
         <InfiniteScroll
-          className="flex flex-wrap"
           scrollableTarget="pp"
           dataLength={loaded_count}
           next={onLoadMore}
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
-          {pokemons_name.slice(0, loaded_count).map(({ name, url }) => (
-            <PokemonCard pokemonName={name} key={name} />
-          ))}
+          <div className="grid grid-cols-1 gap-y-3 gap-x-3 md:grid-cols-2 xl:grid-cols-4">
+            {pokemons_name.slice(0, loaded_count).map(({ name, url }) => (
+              <PokemonCard pokemonName={name} key={name} />
+            ))}
+          </div>
         </InfiniteScroll>
       </div>
     </div>

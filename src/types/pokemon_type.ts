@@ -1,5 +1,6 @@
 export interface RootPokemon {
-  loading: boolean
+  loading?: boolean
+  images?: { front: string[]; back: string[] }
   abilities: Ability2[]
   base_experience: number
   forms: Ability[]

@@ -1,4 +1,5 @@
 import { actions } from '@/reducers/pokemon'
+import { RootPokemon } from '@/types/pokemon_type'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
 export const client = new Pokedex({ cache: true, protocol: 'https' })
@@ -72,6 +73,36 @@ export const fetchPokemonByName = (pokemonName) => {
       types,
       weight,
     } = data
+    const {
+      back_default,
+      back_shiny,
+      front_default,
+      front_shiny,
+      back_female,
+      back_shiny_female,
+      front_female,
+      front_shiny_female,
+      other,
+    } = sprites as RootPokemon['sprites']
+    const offical_artwork = other['official-artwork']
+    const front = [
+      offical_artwork.front_default,
+      // front_default,
+      // front_shiny,
+      // front_female,
+      // front_shiny_female,
+      other.dream_world.front_default,
+      other.home.front_default,
+      other.home.front_female,
+      // other.home.front_shiny,
+      // other.home.front_shiny_female,
+    ].filter((e) => e)
+    const back = [
+      // back_default,
+      // back_shiny,
+      // back_female,
+      // back_shiny_female,
+    ].filter((e) => e)
     return dispatch({
       type: actions.SET_POKEMON_DETAILS,
       payload: {
@@ -84,6 +115,7 @@ export const fetchPokemonByName = (pokemonName) => {
           // forms,
           stats,
           types,
+          images: { front, back },
         },
       },
     })
