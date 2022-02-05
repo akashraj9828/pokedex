@@ -12,6 +12,8 @@ import {
   fetchPokemonSpeciesByName,
   fetchPokemonTypesList,
 } from '@/helpers/pokedex_api'
+import Meta from '@/components/seo/Meta'
+import { STRING } from '@/constants/string'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore()
@@ -25,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Meta title={`${STRING.POKEDEX} | Home`} />
       <DeviceProvider>
         <Provider store={store}>
           <MainLayout>

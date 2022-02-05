@@ -9,10 +9,10 @@ const Meta = ({
   keywords,
   banner,
 }: {
-  title: string
-  description: string
-  keywords: string
-  banner: string
+  title?: string
+  description?: string
+  keywords?: string
+  banner?: string
 }) => {
   const hasWindow = typeof window !== 'undefined'
 

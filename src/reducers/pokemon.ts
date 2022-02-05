@@ -1,7 +1,5 @@
 import { RootEvolution } from '@/types/evolution_type'
 import { RootPokemon } from '@/types/pokemon_type'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 
 export const actions = {
   SET_POKEMON_LIST: 'SET_POKEMON_LIST',
@@ -54,24 +52,4 @@ export default function pokemon(
     default:
       return state
   }
-}
-
-export function useConfig(config, retainOnUnmount = false) {
-  const { key, value } = config
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch({ type: 'SET_CONFIG_VALUE', payload: config })
-    return () => {
-      dispatch({ type: 'RESET_CONFIG_VALUE', payload: { key } })
-    }
-  }, [config])
-
-  useEffect(() => {
-    return () => {
-      if (!retainOnUnmount) {
-        dispatch({ type: 'RESET_CONFIG_VALUE', payload: { key } })
-      }
-    }
-  }, [retainOnUnmount])
 }

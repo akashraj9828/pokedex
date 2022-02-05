@@ -1,9 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;900&display=swap');
+body{
+  @apply font-roboto;
+}
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-yellow-200/40;
+  @apply bg-yellow-200/40 ;
 }
 
 ::-webkit-scrollbar {

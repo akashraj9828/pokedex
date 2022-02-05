@@ -1,25 +1,24 @@
+import Navbar from '@/components/Navbar'
 import React, { useRef } from 'react'
+import { useSelector } from 'react-redux'
 
 const MainLayout = ({ children }) => {
   const contentRef = useRef()
-
+  const navbar = useSelector((state) => state.config.navbar)
   return (
     <div
-      className={`font-roboto grid w-screen grid-flow-row grid-cols-1 grid-rows-[64px_1fr] text-sm text-gray-900 antialiased dark:bg-gray-900 dark:text-white`}
+      className={`font-roboto grid w-screen grid-flow-row grid-cols-1 bg-white text-sm text-gray-800 antialiased`}
+      style={{
+        gridTemplateRows: `${navbar.height || 0}px 1fr`,
+      }}
     >
-      <div className="sticky top-0 z-50 w-screen h-16 col-span-2 row-span-1 text-xs bg-red-500 shadow">
-        Navbar
-        {/* <ErrorBoundaryWrapper>
-          <Navbar1 />
-        </ErrorBoundaryWrapper> */}
-      </div>
+      {/* <Navbar /> */}
       <div
         id={'pp'}
         ref={contentRef}
-        className="flex-column z-50 h-[calc(100vh_-_64px)] w-full overflow-auto p-4"
-        // style={config.content_style_overwride || {}}
+        className="z-50 w-full p-4 overflow-auto flex-column"
+        style={{ height: `calc(100vh - ${navbar.height || 0}px)` }}
       >
-        {/* <div className="sticky top-0 h-10 bg-yellow-700"></div> */}
         {children}
       </div>
     </div>
