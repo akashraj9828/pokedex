@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;900&display=swap');
+body{
+  @apply font-roboto;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-emerald-200/40 ;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent blur-md;
+  border: 8px solid;
+  @apply border-transparent;
+  cursor: pointer;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-emerald-200/30;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+  transition: 300ms;
+  cursor: pointer;
+}

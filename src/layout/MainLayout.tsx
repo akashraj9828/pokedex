@@ -6,12 +6,12 @@ const MainLayout = ({ children }) => {
   const navbar = useSelector((state) => state.config.navbar)
   return (
     <div
-      className={`grid w-screen grid-flow-row grid-cols-1 bg-white font-roboto text-sm text-gray-800 antialiased`}
+      className={`grid w-full grid-flow-row grid-cols-1 bg-white font-roboto text-sm text-gray-800 antialiased`}
       style={{
         gridTemplateRows: `${navbar.height || 0}px 1fr`,
       }}
     >
-      <div className="fixed top-0 left-0 h-screen w-screen opacity-5 grayscale">
+      <div className="fixed top-0 left-0 h-screen w-screen opacity-10 grayscale">
         <img
           src={PokeBallSVG.src}
           className={'fixed top-[-5px] right-[-10px] h-44 md:h-60'}
@@ -23,12 +23,12 @@ const MainLayout = ({ children }) => {
       </div>
       {/* <Navbar /> */}
       <div
-        id={'main_content'}
         ref={contentRef}
-        className="z-50 m-auto w-full max-w-[1280px] overflow-auto p-4"
+        id={'main_content'}
+        className="z-50 m-auto w-full overflow-auto"
         style={{ height: `calc(100vh - ${navbar.height || 0}px)` }}
       >
-        {children}
+        <div className="m-auto max-w-[1366px] p-4">{children}</div>
       </div>
     </div>
   )
