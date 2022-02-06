@@ -39,21 +39,24 @@ export default function Home() {
   }, [pokemons_name, loaded_count])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <pre className="absolute flex text-xl top-10">
+    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+      {/* <pre className="absolute top-10 flex text-xl">
         hasMore : {String(hasMore)} | total: {pokemons_name.length} | loaded :
         {loaded_count}
-      </pre>
-      <div className="w-full">
+      </pre> */}
+      <span className="my-5 w-full text-center text-4xl font-bold text-gray-800 md:text-left">
+        Pokedex
+      </span>
+      <div className="flex">
         {/* <Temp /> */}
         <InfiniteScroll
-          scrollableTarget="pp"
+          scrollableTarget="main_content"
           dataLength={loaded_count}
           next={onLoadMore}
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
-          <div className="grid grid-cols-1 gap-y-3 gap-x-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 justify-items-center gap-y-3 gap-x-3 md:grid-cols-2 xl:grid-cols-4">
             {pokemons_name.slice(0, loaded_count).map(({ name, url }) => (
               <PokemonCard pokemonName={name} key={name} />
             ))}

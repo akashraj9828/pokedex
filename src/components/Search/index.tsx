@@ -36,7 +36,11 @@ const Search = ({
       }}
       onBlur={() => !stayOpen && !searchText && setFocused(false)}
     >
-      <div className={`group relative  ${fullWidth ? 'w-full' : ''}`}>
+      <div
+        className={`group relative flex items-center  ${
+          fullWidth ? 'w-full' : ''
+        }`}
+      >
         <input
           ref={inputRef}
           // type='search'
@@ -48,16 +52,17 @@ const Search = ({
           placeholder={placeholder}
           className={`${
             focused ? (fullWidth ? 'w-full' : 'w-40') : 'w-0'
-          }  transition-width h-10 appearance-none rounded-full border border-gray-200 pl-5 pr-5 text-sm duration-300 focus:outline-none`}
+          }  transition-width h-14 appearance-none rounded-full border border-gray-50 bg-gray-50 pl-12 pr-5 text-base focus:outline-none`}
         />
         <button
           type="submit"
-          className={`absolute top-3 duration-300 ${
-            focused ? 'right-4 my-auto' : 'left-3 right-0 m-auto'
+          className={`absolute  ${
+            focused ? 'left-4 my-auto' : 'left-3 right-0 m-auto'
           }`}
         >
           <FiSearch
-            className={`h-4 w-4 ${
+            strokeWidth={3}
+            className={`h-6 w-6 ${
               focused ? 'stroke-current' : 'text-gray-500'
             }`}
           />

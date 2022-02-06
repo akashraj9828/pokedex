@@ -75,17 +75,17 @@ const PokemonCard = ({ pokemonName }) => {
           <span className="flex">Loading...</span>
         ) : (
           <div className="relative flex w-full">
-            <div className="flex flex-col w-1/2 tracking-wider capitalize">
-              <span className="mb-2 text-xl font-bold text-white/60">
+            <div className="flex w-1/2 flex-col capitalize tracking-wider">
+              <span className="mb-2 text-xl font-bold text-white/80">
                 {name.split('-').join(' ')}
               </span>
               {types.map((e) => (
-                <span className="px-3 py-1 my-1 font-semibold capitalize w-min rounded-2xl bg-white/20 text-white/60">
+                <span className="my-1 w-min rounded-2xl bg-white/20 px-3 py-1 font-semibold capitalize text-white/60">
                   {e.type.name.split('-').join(' ')}
                 </span>
               ))}
             </div>
-            <span className="absolute top-0 right-0 font-mono text-5xl opacity-30">
+            <span className="absolute top-0 right-0 font-mono text-5xl text-white opacity-30">
               #{id}
             </span>
             <img
@@ -100,7 +100,7 @@ const PokemonCard = ({ pokemonName }) => {
                   setCurrentImage(next)
                 }
               }}
-              className="z-10 w-40 h-40"
+              className="z-10 h-40 w-40"
             />
           </div>
         )}
