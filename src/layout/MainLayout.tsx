@@ -1,12 +1,13 @@
 import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
 import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children }: { children: any }) => {
   const contentRef = useRef()
   const navbar = useSelector((state) => state.config.navbar)
+  const backgroundColour = useSelector((state) => state.config.backgroundColour)
   return (
     <div
-      className={`grid w-full grid-flow-row grid-cols-1 bg-white font-roboto text-sm text-gray-800 antialiased`}
+      className={`grid w-full grid-flow-row grid-cols-1 ${backgroundColour} min-h-screen font-roboto text-sm text-gray-800 antialiased`}
       style={{
         gridTemplateRows: `${navbar.height || 0}px 1fr`,
       }}

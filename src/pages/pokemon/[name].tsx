@@ -1,15 +1,11 @@
+import { getPrimaryTypeGradient } from '@/constants/colors'
 import { fetchPokemonByName } from '@/helpers/pokedex_api'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
 import MainLayout from '@/layout/MainLayout'
+import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import Link from 'next/link'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import {
-  getPokemonTypeColor,
-  getPrimaryTypeGradient,
-} from '@/constants/colors'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const PokemonDetail = () => {
   const {
@@ -23,6 +19,12 @@ const PokemonDetail = () => {
 
   const one_pokemon = useSelector(
     (state) => state.pokemon.pokemon_details[name as string]
+  )
+
+  const primaryTypeGradient = getPrimaryTypeGradient(one_pokemon?.types || [])
+
+  useBackgroundColour(
+    `bg-gradient-to-br ${primaryTypeGradient}  bg-[length:200%_200%] animate-gradient-x`
   )
 
   if (!one_pokemon) {
@@ -56,8 +58,6 @@ const PokemonDetail = () => {
   } = one_pokemon
 
   const primaryImage = images?.front?.[0] || images?.back?.[0] || null
-  const primaryTypeGradient = getPrimaryTypeGradient(types || [])
-
   const formatStatName = (statName: string) => {
     switch (statName) {
       case 'hp':
@@ -93,152 +93,145 @@ const PokemonDetail = () => {
   }
 
   const navIds = generateNavIds(id)
-
+  console.log({ navIds, id })
   return (
-    <MainLayout>
-      <div className="min-h-screen bg-gray-50">
-        {/* Pokemon ID Navigation Header */}
-        <div className="bg-white shadow-sm">
-          <div className="mx-auto max-w-4xl px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link href="/pokedex">
-                <a className="flex items-center text-gray-600 hover:text-gray-800">
-                  <IoIosArrowBack className="mr-2" />
-                  Back to Pokedex
-                </a>
-              </Link>
-              
-              <div className="flex items-center space-x-2">
-                {navIds.map((navId) => (
-                  <Link key={navId} href={`/pokemon/${navId}`}>
-                    <a
-                      className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
-                        navId === id
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      {navId}
-                    </a>
-                  </Link>
-                ))}
-              </div>
+    <div className={`min-h-screen `}>
+      {/* Pokemon ID Navigation Header */}
+      <div className="shadow-sm">
+        <div className="mx-auto flex w-full items-center justify-center px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between space-x-2">
+              {navIds.map((navId) => (
+                <Link key={navId} href={`/pokemon/${navId}`}>
+                  <a
+                    className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
+                      navId === id
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                    }`}
+                  >
+                    {navId}
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="mx-auto max-w-4xl px-6 py-8">
-          <div
-            className={`rounded-2xl bg-gradient-to-br ${primaryTypeGradient} p-8 text-white shadow-lg`}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              {/* Left Side - Pokemon Info */}
-              <div className="space-y-6">
-                {/* Pokemon Number and Name */}
+      {/* Main Content */}
+      <div className="mx-auto max-w-4xl px-6 py-8">
+        <div
+          className={`rounded-2xl bg-gradient-to-br p-8 text-white shadow-lg`}
+        >
+          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
+            {/* Left Side - Pokemon Info */}
+            <div className="space-y-6">
+              {/* Pokemon Number and Name */}
+              <div>
+                <div className="mb-1 text-sm font-medium opacity-80">
+                  #{id.toString().padStart(3, '0')}
+                </div>
+                <h1 className="mb-4 text-4xl font-bold capitalize">
+                  {pokemonName}
+                </h1>
+
+                {/* Japanese Name Placeholder */}
+                <div className="mb-6 text-lg opacity-70">アマルルガ</div>
+              </div>
+
+              {/* Height and Weight */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <div className="text-sm font-medium opacity-80 mb-1">
-                    #{id.toString().padStart(3, '0')}
-                  </div>
-                  <h1 className="text-4xl font-bold capitalize mb-4">
-                    {pokemonName}
-                  </h1>
-                  
-                  {/* Japanese Name Placeholder */}
-                  <div className="text-lg opacity-70 mb-6">
-                    アマルルガ
+                  <div className="mb-1 opacity-70">Height:</div>
+                  <div className="font-semibold">
+                    {(height / 10).toFixed(1)}m
                   </div>
                 </div>
-
-                {/* Height and Weight */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <div className="opacity-70 mb-1">Height:</div>
-                    <div className="font-semibold">{(height / 10).toFixed(1)}m</div>
+                <div>
+                  <div className="mb-1 opacity-70">Weight:</div>
+                  <div className="font-semibold">
+                    {(weight / 10).toFixed(1)}kg
                   </div>
-                  <div>
-                    <div className="opacity-70 mb-1">Weight:</div>
-                    <div className="font-semibold">{(weight / 10).toFixed(1)}kg</div>
-                  </div>
-                </div>
-
-                {/* Pokemon Image */}
-                <div className="flex justify-center md:justify-start">
-                  {primaryImage ? (
-                    <div className="relative">
-                      <img
-                        src={primaryImage}
-                        alt={pokemonName}
-                        className="h-48 w-48 object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex h-48 w-48 items-center justify-center text-white/50">
-                      No image available
-                    </div>
-                  )}
-                </div>
-
-                {/* Type Icons */}
-                <div className="flex space-x-3">
-                  {types?.map((typeObj, index) => (
-                    <div
-                      key={index}
-                      className="rounded-full bg-white/20 p-3 backdrop-blur-sm"
-                    >
-                      <img
-                        src={`/types/${
-                          typeObj.type.name.charAt(0).toUpperCase() +
-                          typeObj.type.name.slice(1)
-                        }.png`}
-                        alt={typeObj.type.name}
-                        className="h-8 w-8"
-                        onError={(e) => {
-                          // Fallback to text if image fails
-                          e.currentTarget.style.display = 'none'
-                        }}
-                      />
-                    </div>
-                  ))}
                 </div>
               </div>
 
-              {/* Right Side - Base Stats */}
-              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                <h2 className="text-xl font-bold mb-6">Base stats:</h2>
-                
-                <div className="space-y-4">
-                  {stats?.map((stat, index) => {
-                    const statName = stat.stat.name
-                    const baseStat = stat.base_stat
-                    const barWidth = getStatBarWidth(baseStat)
+              {/* Pokemon Image */}
+              <div className="flex justify-center md:justify-start">
+                {primaryImage ? (
+                  <div className="relative">
+                    <img
+                      src={primaryImage}
+                      alt={pokemonName}
+                      className="h-48 w-48 object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex h-48 w-48 items-center justify-center text-white/50">
+                    No image available
+                  </div>
+                )}
+              </div>
 
-                    return (
-                      <div key={index} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium">
-                            {formatStatName(statName)}:
-                          </span>
-                          <span className="text-sm font-bold bg-white/20 px-2 py-1 rounded">
-                            {baseStat}
-                          </span>
-                        </div>
-                        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-white/80 rounded-full transition-all duration-700 ease-out"
-                            style={{ width: `${barWidth}%` }}
-                          />
-                        </div>
+              {/* Type Icons */}
+              <div className="flex space-x-3">
+                {types?.map((typeObj, index) => (
+                  <div
+                    key={index}
+                    className="rounded-full bg-white/20 p-3 backdrop-blur-sm"
+                  >
+                    <img
+                      src={`/types/${
+                        typeObj.type.name.charAt(0).toUpperCase() +
+                        typeObj.type.name.slice(1)
+                      }.png`}
+                      alt={typeObj.type.name}
+                      className="h-8 w-8"
+                      onError={(e) => {
+                        // Fallback to text if image fails
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side - Base Stats */}
+            <div className="rounded-xl bg-white/10 p-6 backdrop-blur-sm">
+              <h2 className="mb-6 text-xl font-bold">Base stats:</h2>
+
+              <div className="space-y-4">
+                {stats?.map((stat, index) => {
+                  const statName = stat.stat.name
+                  const baseStat = stat.base_stat
+                  const barWidth = getStatBarWidth(baseStat)
+
+                  return (
+                    <div key={index} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">
+                          {formatStatName(statName)}:
+                        </span>
+                        <span className="rounded bg-white/20 px-2 py-1 text-sm font-bold">
+                          {baseStat}
+                        </span>
                       </div>
-                    )
-                  })}
-                </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-white/20">
+                        <div
+                          className="h-full rounded-full bg-white/80 transition-all duration-700 ease-out"
+                          style={{ width: `${barWidth}%` }}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </MainLayout>
+    </div>
   )
 }
 
