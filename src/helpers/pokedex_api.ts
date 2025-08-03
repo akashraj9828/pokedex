@@ -5,7 +5,7 @@ import { Pokedex } from 'pokeapi-js-wrapper'
 export const client = new Pokedex({ cache: true, protocol: 'https' })
 
 export const getPokemonTypesList = async () => {
-  const { results } = await client.getTypesList({ limit: 10000 })
+  const { results } = await client.getTypesList({ offset: 0, limit: 10000 })
   return results
 }
 export const fetchPokemonTypesList = () => {
@@ -18,7 +18,7 @@ export const fetchPokemonTypesList = () => {
 }
 
 export const getPokemonList = async () => {
-  const { results } = await client.getPokemonsList({ limit: 898 })
+  const { results } = await client.getPokemonsList({ offset: 0, limit: 898 })
   return results
 }
 export const fetchPokemonList = () => {
