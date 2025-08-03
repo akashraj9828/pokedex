@@ -1,29 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
-const typesColorMap = {
-  normal: 'bg-neutral-400',
-  fighting: 'bg-slate-400',
-  flying: 'bg-zinc-300',
-  poison: 'bg-fuchsia-900',
-  ground: 'bg-stone-500',
-  rock: 'bg-stone-500',
-  bug: 'bg-emerald-600',
-  ghost: 'bg-violet-600',
-  steel: 'bg-slate-500',
-  fire: 'bg-red-400',
-  water: 'bg-sky-500',
-  grass: 'bg-green-500',
-  electric: 'bg-amber-400',
-  psychic: 'bg-purple-800',
-  ice: 'bg-blue-400',
-  dragon: 'bg-rose-500',
-  dark: 'bg-slate-800',
-  fairy: 'bg-pink-400',
-  unknown: 'bg-orange-300',
-  shadow: 'bg-gray-700',
-}
+import { getPokemonCardColor } from '@/constants/colors'
 
 const PokemonCard = ({ pokemonName }) => {
   const poke_detail = useSelector(
@@ -79,7 +57,9 @@ const PokemonCard = ({ pokemonName }) => {
         //   setHovering(false)
         // }}
         draggable={false}
-        className={`group relative m-1 flex h-[13rem] w-[20rem] cursor-pointer select-none rounded-2xl  border-0 ${typesColorMap[pokemon_type]} p-6`}
+        className={`group relative m-1 flex h-[13rem] w-[20rem] cursor-pointer select-none rounded-2xl  border-0 ${getPokemonCardColor(
+          pokemon_type
+        )} p-6`}
       >
         <div
           style={{
