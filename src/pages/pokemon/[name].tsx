@@ -8,9 +8,7 @@ import Link from 'next/link'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import {
   getPokemonTypeColor,
-  getPokemonTypeGradient,
   getPrimaryTypeGradient,
-  getStatColor,
 } from '@/constants/colors'
 
 const PokemonDetail = () => {
@@ -18,7 +16,6 @@ const PokemonDetail = () => {
     query: { name },
   } = useRouter()
   const dispatch = useDispatch()
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     name && dispatch(fetchPokemonByName(name))
@@ -58,130 +55,159 @@ const PokemonDetail = () => {
     images,
   } = one_pokemon
 
-  const primaryType = types?.[0]?.type?.name || 'normal'
-  const allImages = [...(images?.front || []), ...(images?.back || [])]
-  const currentImage = allImages[currentImageIndex] || null
-
-  // Get colors using helper functions
+  const primaryImage = images?.front?.[0] || images?.back?.[0] || null
   const primaryTypeGradient = getPrimaryTypeGradient(types || [])
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % allImages.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + allImages.length) % allImages.length
-    )
-  }
 
   const formatStatName = (statName: string) => {
     switch (statName) {
+      case 'hp':
+        return 'HP'
+      case 'attack':
+        return 'ATTACK'
+      case 'defense':
+        return 'DEFENSE'
       case 'special-attack':
         return 'SP. ATTACK'
       case 'special-defense':
         return 'SP. DEFENSE'
+      case 'speed':
+        return 'SPEED'
       default:
         return statName.toUpperCase()
     }
   }
 
   const getStatBarWidth = (baseStat: number) => {
-    return Math.min((baseStat / 150) * 100, 100)
+    return Math.min((baseStat / 200) * 100, 100)
   }
+
+  // Generate Pokemon ID navigation array (shows current and surrounding IDs)
+  const generateNavIds = (currentId: number) => {
+    const navIds = []
+    for (let i = currentId - 4; i <= currentId + 4; i++) {
+      if (i >= 1 && i <= 1010) {
+        navIds.push(i)
+      }
+    }
+    return navIds
+  }
+
+  const navIds = generateNavIds(id)
 
   return (
     <MainLayout>
-      <div className="min-h-screen py-8">
-        <div className="mx-auto max-w-6xl px-4">
-          {/* Back Navigation */}
-          <Link href="/pokedex">
-            <a className="mb-8 inline-flex items-center text-gray-600 hover:text-gray-800">
-              <IoIosArrowBack className="mr-2" />
-              Back to Pokedex
-            </a>
-          </Link>
-
-          {/* Main Pokemon Card Layout */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-            {/* Main Pokemon Card */}
-            <div className="md:col-span-4">
-              <div
-                className={`relative h-[500px] rounded-3xl bg-gradient-to-br ${primaryTypeGradient} p-6 text-white shadow-2xl`}
-              >
-                {/* Pokemon ID */}
-                <div className="absolute top-6 right-6">
-                  <span className="font-mono text-6xl opacity-30">#{id}</span>
-                </div>
-
-                {/* Pokemon Info */}
-                <div className="flex h-full flex-col">
-                  <div className="mb-4">
-                    <h1 className="text-3xl font-bold capitalize">
-                      {pokemonName}
-                    </h1>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {types?.map((typeObj, index) => (
-                        <span
-                          key={index}
-                          className="rounded-full bg-white/20 px-3 py-1 text-sm font-semibold capitalize"
-                        >
-                          {typeObj.type.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Height and Weight */}
-                  <div className="mb-6 space-y-2 text-white/80">
-                    <div>Height: {(height / 10).toFixed(1)}m</div>
-                    <div>Weight: {(weight / 10).toFixed(1)}kg</div>
-                  </div>
-
-                  {/* Pokemon Image */}
-                  <div className="flex flex-1 items-center justify-center">
-                    {currentImage ? (
-                      <div className="relative">
-                        <img
-                          src={currentImage}
-                          alt={pokemonName}
-                          className="h-64 w-64 object-contain"
-                        />
-                        {allImages.length > 1 && (
-                          <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2 transform space-x-2">
-                            <button
-                              onClick={prevImage}
-                              className="rounded-full bg-white/20 p-2 hover:bg-white/30"
-                            >
-                              <IoIosArrowBack className="text-white" />
-                            </button>
-                            <button
-                              onClick={nextImage}
-                              className="rounded-full bg-white/20 p-2 hover:bg-white/30"
-                            >
-                              <IoIosArrowForward className="text-white" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="flex h-64 w-64 items-center justify-center text-white/50">
-                        No image available
-                      </div>
-                    )}
-                  </div>
-                </div>
+      <div className="min-h-screen bg-gray-50">
+        {/* Pokemon ID Navigation Header */}
+        <div className="bg-white shadow-sm">
+          <div className="mx-auto max-w-4xl px-6 py-4">
+            <div className="flex items-center justify-between">
+              <Link href="/pokedex">
+                <a className="flex items-center text-gray-600 hover:text-gray-800">
+                  <IoIosArrowBack className="mr-2" />
+                  Back to Pokedex
+                </a>
+              </Link>
+              
+              <div className="flex items-center space-x-2">
+                {navIds.map((navId) => (
+                  <Link key={navId} href={`/pokemon/${navId}`}>
+                    <a
+                      className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                        navId === id
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {navId}
+                    </a>
+                  </Link>
+                ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Stats Panel */}
-            <div className="md:col-span-8">
-              <div className="rounded-3xl bg-white p-8 shadow-xl">
-                <h2 className="mb-6 text-2xl font-bold text-gray-800">
-                  Base Stats
-                </h2>
+        {/* Main Content */}
+        <div className="mx-auto max-w-4xl px-6 py-8">
+          <div
+            className={`rounded-2xl bg-gradient-to-br ${primaryTypeGradient} p-8 text-white shadow-lg`}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              {/* Left Side - Pokemon Info */}
+              <div className="space-y-6">
+                {/* Pokemon Number and Name */}
+                <div>
+                  <div className="text-sm font-medium opacity-80 mb-1">
+                    #{id.toString().padStart(3, '0')}
+                  </div>
+                  <h1 className="text-4xl font-bold capitalize mb-4">
+                    {pokemonName}
+                  </h1>
+                  
+                  {/* Japanese Name Placeholder */}
+                  <div className="text-lg opacity-70 mb-6">
+                    アマルルガ
+                  </div>
+                </div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {/* Height and Weight */}
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="opacity-70 mb-1">Height:</div>
+                    <div className="font-semibold">{(height / 10).toFixed(1)}m</div>
+                  </div>
+                  <div>
+                    <div className="opacity-70 mb-1">Weight:</div>
+                    <div className="font-semibold">{(weight / 10).toFixed(1)}kg</div>
+                  </div>
+                </div>
+
+                {/* Pokemon Image */}
+                <div className="flex justify-center md:justify-start">
+                  {primaryImage ? (
+                    <div className="relative">
+                      <img
+                        src={primaryImage}
+                        alt={pokemonName}
+                        className="h-48 w-48 object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-48 w-48 items-center justify-center text-white/50">
+                      No image available
+                    </div>
+                  )}
+                </div>
+
+                {/* Type Icons */}
+                <div className="flex space-x-3">
+                  {types?.map((typeObj, index) => (
+                    <div
+                      key={index}
+                      className="rounded-full bg-white/20 p-3 backdrop-blur-sm"
+                    >
+                      <img
+                        src={`/types/${
+                          typeObj.type.name.charAt(0).toUpperCase() +
+                          typeObj.type.name.slice(1)
+                        }.png`}
+                        alt={typeObj.type.name}
+                        className="h-8 w-8"
+                        onError={(e) => {
+                          // Fallback to text if image fails
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Side - Base Stats */}
+              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
+                <h2 className="text-xl font-bold mb-6">Base stats:</h2>
+                
+                <div className="space-y-4">
                   {stats?.map((stat, index) => {
                     const statName = stat.stat.name
                     const baseStat = stat.base_stat
@@ -189,19 +215,17 @@ const PokemonDetail = () => {
 
                     return (
                       <div key={index} className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm font-semibold text-gray-600">
-                            {formatStatName(statName)}
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">
+                            {formatStatName(statName)}:
                           </span>
-                          <span className="text-sm font-bold text-gray-800">
+                          <span className="text-sm font-bold bg-white/20 px-2 py-1 rounded">
                             {baseStat}
                           </span>
                         </div>
-                        <div className="h-3 w-full rounded-full bg-gray-200">
+                        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${getStatColor(
-                              statName
-                            )} transition-all duration-500`}
+                            className="h-full bg-white/80 rounded-full transition-all duration-700 ease-out"
                             style={{ width: `${barWidth}%` }}
                           />
                         </div>
@@ -209,57 +233,8 @@ const PokemonDetail = () => {
                     )
                   })}
                 </div>
-
-                {/* Type Effectiveness (Placeholder) */}
-                <div className="mt-8">
-                  <h3 className="mb-4 text-xl font-bold text-gray-800">
-                    Types
-                  </h3>
-                  <div className="flex flex-wrap gap-3">
-                    {types?.map((typeObj, index) => (
-                      <div
-                        key={index}
-                        className={`flex items-center rounded-full ${getPokemonTypeColor(
-                          typeObj.type.name
-                        )} px-4 py-2 text-white shadow-lg`}
-                      >
-                        <img
-                          src={`/types/${
-                            typeObj.type.name.charAt(0).toUpperCase() +
-                            typeObj.type.name.slice(1)
-                          }.png`}
-                          alt={typeObj.type.name}
-                          className="mr-2 h-6 w-6"
-                          onError={(e) => {
-                            // Hide the image if it fails to load
-                            e.currentTarget.style.display = 'none'
-                          }}
-                        />
-                        <span className="font-semibold capitalize">
-                          {typeObj.type.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
-
-          {/* Navigation to other Pokemon */}
-          <div className="mt-12 flex justify-between">
-            <Link href={`/pokemon/${id > 1 ? id - 1 : 898}`}>
-              <a className="flex items-center rounded-lg bg-gray-100 px-6 py-3 text-gray-700 hover:bg-gray-200">
-                <IoIosArrowBack className="mr-2" />
-                Previous Pokemon
-              </a>
-            </Link>
-            <Link href={`/pokemon/${id < 898 ? id + 1 : 1}`}>
-              <a className="flex items-center rounded-lg bg-gray-100 px-6 py-3 text-gray-700 hover:bg-gray-200">
-                Next Pokemon
-                <IoIosArrowForward className="ml-2" />
-              </a>
-            </Link>
           </div>
         </div>
       </div>
