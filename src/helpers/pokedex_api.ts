@@ -5,6 +5,7 @@ import {
   setPokemonSpecies,
   setPokemonEvolutions,
 } from '@/reducers/pokemon'
+import { PokemonDetails } from '@/reducers/pokemon.types'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
 export const client = new Pokedex({ cache: true, protocol: 'https' })
@@ -44,7 +45,20 @@ export const getPokemonByName = async (pokemonName) => {
 }
 export const fetchPokemonByName = (pokemonName) => {
   return async (dispatch, getState) => {
-    dispatch(setPokemonDetails({ [pokemonName]: { loading: true } }))
+    dispatch(
+      setPokemonDetails({
+        [pokemonName]: {
+          loading: true,
+          id: 0,
+          name: pokemonName,
+          weight: 0,
+          height: 0,
+          stats: [],
+          types: [],
+          images: { front: [], back: [] },
+        },
+      })
+    )
     const data = await getPokemonByName(pokemonName)
     const {
       abilities,
