@@ -1,32 +1,15 @@
-import reducers from '@/reducers'
+import { configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
-import { applyMiddleware, compose, createStore, Store } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-
-const middlewares = [thunkMiddleware]
+import rootReducer from '@/reducers'
 
 let store
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
-  }
-}
-
-const composeEnhancers =
-  (typeof window !== 'undefined' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-  compose
-
-// not using redux dev tools because data is too big and it crashes
-// const composeEnhancers = compose
 function initStore(initialState) {
-  const store = createStore(
-    reducers,
-    initialState,
-    composeEnhancers(applyMiddleware(...middlewares))
-  )
-  return store
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState: initialState,
+    devTools: process.env.NODE_ENV !== 'production',
+  })
 }
 
 export const initializeStore = (preloadedState) => {
@@ -52,8 +35,12 @@ export const initializeStore = (preloadedState) => {
 }
 
 export function useStore(initialState = null) {
-  const store: Store = useMemo(() => {
+  const store = useMemo(() => {
     return initializeStore(initialState || {})
   }, [initialState])
   return store
 }
+
+export type AppStore = ReturnType<typeof initStore>
+export type RootState = ReturnType<typeof rootReducer>
+export type AppDispatch = AppStore['dispatch']

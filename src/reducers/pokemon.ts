@@ -1,55 +1,66 @@
-import { RootEvolution } from '@/types/evolution_type'
-import { RootPokemon } from '@/types/pokemon_type'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export const actions = {
-  SET_POKEMON_LIST: 'SET_POKEMON_LIST',
-  SET_POKEMON_TYPES: 'SET_POKEMON_TYPES',
-  SET_POKEMON_DETAILS: 'SET_POKEMON_DETAILS',
-  SET_POKEMON_EVOLUTIONS: 'SET_POKEMON_EVOLUTIONS',
-  SET_POKEMON_SPECIES: 'SET_POKEMON_SPECIES',
+interface PokemonState {
+  error: string
+  pokemon_types: { name: string; url: string }[]
+  pokemon_list: { name: string; url: string }[]
+  pokemon_details: { [pokemon_name: string]: any }
+  pokemon_evolutions: { [pokemon_id: string]: any }
+  pokemon_species: { [pokemon_name: string]: any }
 }
-const defaultState = {
+
+const initialState: PokemonState = {
   error: '',
-  pokemon_types: [] as { name: string; url: string }[],
-  pokemon_list: [] as { name: string; url: string }[],
-  pokemon_details: {} as { [pokemon_name: string]: RootPokemon },
-  pokemon_evolutions: {} as { [pokemon_id: string]: RootEvolution },
-  pokemon_species: {} as { [pokemon_name: string]: RootEvolution },
+  pokemon_types: [],
+  pokemon_list: [],
+  pokemon_details: {},
+  pokemon_evolutions: {},
+  pokemon_species: {},
 }
 
-export default function pokemon(
-  state = defaultState,
-  action
-): typeof defaultState {
-  const { type, payload } = action
+const pokemonSlice = createSlice({
+  name: 'pokemon',
+  initialState,
+  reducers: {
+    setPokemonList: (
+      state,
+      action: PayloadAction<{ name: string; url: string }[]>
+    ) => {
+      state.pokemon_list = action.payload
+    },
+    setPokemonTypes: (
+      state,
+      action: PayloadAction<{ name: string; url: string }[]>
+    ) => {
+      state.pokemon_types = action.payload
+    },
+    setPokemonDetails: (
+      state,
+      action: PayloadAction<{ [pokemon_name: string]: any }>
+    ) => {
+      Object.assign(state.pokemon_details, action.payload)
+    },
+    setPokemonEvolutions: (
+      state,
+      action: PayloadAction<{ [pokemon_id: string]: any }>
+    ) => {
+      Object.assign(state.pokemon_evolutions, action.payload)
+    },
+    setPokemonSpecies: (
+      state,
+      action: PayloadAction<{ [pokemon_name: string]: any }>
+    ) => {
+      Object.assign(state.pokemon_species, action.payload)
+    },
+  },
+})
 
-  switch (type) {
-    case actions.SET_POKEMON_LIST:
-      return {
-        ...state,
-        pokemon_list: payload,
-      }
-    case actions.SET_POKEMON_TYPES:
-      return {
-        ...state,
-        pokemon_types: payload,
-      }
-    case actions.SET_POKEMON_DETAILS:
-      return {
-        ...state,
-        pokemon_details: { ...state.pokemon_details, ...payload },
-      }
-    case actions.SET_POKEMON_EVOLUTIONS:
-      return {
-        ...state,
-        pokemon_evolutions: { ...state.pokemon_evolutions, ...payload },
-      }
-    case actions.SET_POKEMON_SPECIES:
-      return {
-        ...state,
-        pokemon_species: { ...state.pokemon_species, ...payload },
-      }
-    default:
-      return state
-  }
-}
+export const {
+  setPokemonList,
+  setPokemonTypes,
+  setPokemonDetails,
+  setPokemonEvolutions,
+  setPokemonSpecies,
+} = pokemonSlice.actions
+
+export default pokemonSlice.reducer

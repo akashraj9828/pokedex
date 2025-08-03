@@ -1,23 +1,22 @@
-export const config_actions = {
-  SET_NAVBAR_HEIGHT: 'SET_NAVBAR_HEIGHT',
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+interface ConfigState {
+  navbar: { height: number }
 }
-const defaultState = {
+
+const initialState: ConfigState = {
   navbar: { height: 0 },
 }
 
-export default function config(
-  state = defaultState,
-  action
-): typeof defaultState {
-  const { type, payload } = action
+const configSlice = createSlice({
+  name: 'config',
+  initialState,
+  reducers: {
+    setNavbarHeight: (state, action: PayloadAction<number>) => {
+      state.navbar.height = action.payload
+    },
+  },
+})
 
-  switch (type) {
-    case config_actions.SET_NAVBAR_HEIGHT:
-      return {
-        ...state,
-        navbar: { ...state.navbar, height: payload },
-      }
-    default:
-      return state
-  }
-}
+export const { setNavbarHeight } = configSlice.actions
+export default configSlice.reducer

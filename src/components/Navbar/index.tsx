@@ -1,4 +1,4 @@
-import { config_actions } from '@/reducers/config'
+import { setNavbarHeight } from '@/reducers/config'
 import useElementSize from '@/utils/use-element-size'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
@@ -17,20 +17,20 @@ const Navbar = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     return () => {
-      dispatch({ type: config_actions.SET_NAVBAR_HEIGHT, payload: 0 })
+      dispatch(setNavbarHeight(0))
     }
   }, [])
   useEffect(() => {
-    dispatch({ type: config_actions.SET_NAVBAR_HEIGHT, payload: height })
+    dispatch(setNavbarHeight(height))
   }, [height])
 
   return (
-    <div ref={ref} className="z-50 w-screen text-xs h-fit">
-      <div className="flex mx-10 mt-5 rounded-md shadow-lg">
+    <div ref={ref} className="z-50 h-fit w-screen text-xs">
+      <div className="mx-10 mt-5 flex rounded-md shadow-lg">
         {links.map(({ title, link }) => {
           return (
             <Link href={link}>
-              <a className="p-4 m-2 text-xl font-semibold bg-white rounded-md shadow-md">
+              <a className="m-2 rounded-md bg-white p-4 text-xl font-semibold shadow-md">
                 {title}
               </a>
             </Link>

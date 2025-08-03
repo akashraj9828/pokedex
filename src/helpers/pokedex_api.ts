@@ -1,5 +1,10 @@
-import { actions } from '@/reducers/pokemon'
-import { RootPokemon } from '@/types/pokemon_type'
+import {
+  setPokemonTypes,
+  setPokemonList,
+  setPokemonDetails,
+  setPokemonSpecies,
+  setPokemonEvolutions,
+} from '@/reducers/pokemon'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
 export const client = new Pokedex({ cache: true, protocol: 'https' })
@@ -10,10 +15,7 @@ export const getPokemonTypesList = async () => {
 }
 export const fetchPokemonTypesList = () => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_TYPES,
-      payload: await getPokemonTypesList(),
-    })
+    return dispatch(setPokemonTypes(await getPokemonTypesList()))
   }
 }
 
@@ -23,10 +25,7 @@ export const getPokemonList = async () => {
 }
 export const fetchPokemonList = () => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_LIST,
-      payload: await getPokemonList(),
-    })
+    return dispatch(setPokemonList(await getPokemonList()))
   }
 }
 
@@ -36,10 +35,7 @@ export const getPokemonListByType = async (pokemonType) => {
 }
 export const fetchPokemonListByType = (pokemonType) => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_LIST,
-      payload: await getPokemonListByType(pokemonType),
-    })
+    return dispatch(setPokemonList(await getPokemonListByType(pokemonType)))
   }
 }
 
@@ -48,10 +44,7 @@ export const getPokemonByName = async (pokemonName) => {
 }
 export const fetchPokemonByName = (pokemonName) => {
   return async (dispatch, getState) => {
-    dispatch({
-      type: actions.SET_POKEMON_DETAILS,
-      payload: { [pokemonName]: { loading: true } },
-    })
+    dispatch(setPokemonDetails({ [pokemonName]: { loading: true } }))
     const data = await getPokemonByName(pokemonName)
     const {
       abilities,
@@ -83,7 +76,7 @@ export const fetchPokemonByName = (pokemonName) => {
       front_female,
       front_shiny_female,
       other,
-    } = sprites as RootPokemon['sprites']
+    } = sprites
     const offical_artwork = other['official-artwork']
     const front = [
       offical_artwork.front_default,
@@ -103,9 +96,8 @@ export const fetchPokemonByName = (pokemonName) => {
       // back_female,
       // back_shiny_female,
     ].filter((e) => e)
-    return dispatch({
-      type: actions.SET_POKEMON_DETAILS,
-      payload: {
+    return dispatch(
+      setPokemonDetails({
         [pokemonName]: {
           loading: false,
           id,
@@ -117,8 +109,8 @@ export const fetchPokemonByName = (pokemonName) => {
           types,
           images: { front, back },
         },
-      },
-    })
+      })
+    )
   }
 }
 
@@ -171,10 +163,11 @@ export const getPokemonSpeciesByName = async (speciesName) => {
 }
 export const fetchPokemonSpeciesByName = (speciesName) => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_SPECIES,
-      payload: { [speciesName]: await getPokemonSpeciesByName(speciesName) },
-    })
+    return dispatch(
+      setPokemonSpecies({
+        [speciesName]: await getPokemonSpeciesByName(speciesName),
+      })
+    )
   }
 }
 
@@ -183,10 +176,9 @@ export const getPokemonFormByName = async (formName) => {
 }
 export const fetchPokemonFormByName = (formName) => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_LIST,
-      payload: await getPokemonFormByName(formName),
-    })
+    return dispatch(
+      setPokemonDetails({ [formName]: await getPokemonFormByName(formName) })
+    )
   }
 }
 
@@ -196,9 +188,10 @@ export const getPokemonEvolutionById = async (evolutionId) => {
 }
 export const fetchPokemonEvolutionById = (evolutionId) => {
   return async (dispatch, getState) => {
-    return dispatch({
-      type: actions.SET_POKEMON_EVOLUTIONS,
-      payload: { [evolutionId]: await getPokemonEvolutionById(evolutionId) },
-    })
+    return dispatch(
+      setPokemonEvolutions({
+        [evolutionId]: await getPokemonEvolutionById(evolutionId),
+      })
+    )
   }
 }
