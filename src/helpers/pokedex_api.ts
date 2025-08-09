@@ -173,6 +173,7 @@ export const getPokemonSpeciesByName = async (speciesName) => {
     base_happiness,
     capture_rate,
     varieties,
+    names,
   }
 }
 export const fetchPokemonSpeciesByName = (speciesName) => {

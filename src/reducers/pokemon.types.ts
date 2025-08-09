@@ -26,4 +26,5 @@ export type PokemonSpeciesPartial = Pick<
   | 'base_happiness'
   | 'capture_rate'
   | 'varieties'
+  | 'names'
 > & { evolutionId: string | null }
