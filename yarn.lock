@@ -359,21 +359,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^16 || ^17":
-  version: 17.0.87
-  resolution: "@types/react@npm:17.0.87"
+"@types/react@npm:17.0.2":
+  version: 17.0.2
+  resolution: "@types/react@npm:17.0.2"
   dependencies:
     "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:^0.16"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/42efa9d1fa7c6c5422ef1add693c23e35dab0df68265fd403a1c13193acdd972ed03cd5f1cea8e6b378503abb70f25da04ff24f4ef0468d2b8e25db6bd394363
-  languageName: node
-  linkType: hard
-
-"@types/scheduler@npm:^0.16":
-  version: 0.16.8
-  resolution: "@types/scheduler@npm:0.16.8"
-  checksum: 10c0/f86de504945b8fc41b1f391f847444d542e2e4067cf7e5d9bfeb5d2d2393d3203b1161bc0ef3b1e104d828dabfb60baf06e8d2c27e27ff7e8258e6e618d8c4ec
+  checksum: 10c0/6b48673db526015c45a0dc036394cdc7d5fd48388b3f05f8f433e74c08fb4c80e5acfc66baa2c7cc8a091d0d8524bcb00397bc7c6286fcefad4bf4cef959d764
   languageName: node
   linkType: hard
 
@@ -2647,7 +2639,7 @@ __metadata:
   dependencies:
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@types/node": "npm:17.0.4"
-    "@types/react": "npm:17.0.2"
+    "@types/react": "npm:^19.1.9"
     autoprefixer: "npm:^10.4.0"
     next: "npm:12.0.8"
     pokeapi-js-wrapper: "npm:1.2.8"
