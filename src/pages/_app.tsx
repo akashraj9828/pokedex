@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Meta title={`${STRING.POKEDEX} | Home`} />
       <DeviceProvider>
-        <ReduxProvider store={store} ref={null}>
+        <ReduxProvider store={store}>
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
