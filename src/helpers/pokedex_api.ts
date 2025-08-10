@@ -1,16 +1,20 @@
 import {
-  setPokemonTypes,
-  setPokemonList,
   setPokemonDetails,
-  setPokemonSpecies,
   setPokemonEvolutions,
+  setPokemonGeneration,
+  setPokemonList,
+  setPokemonSpecies,
+  setPokemonTypes,
 } from '@/reducers/pokemon'
-import { PokemonDetails } from '@/reducers/pokemon.types'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
-export const client = new Pokedex({ cache: true, protocol: 'https' })
+export const client = new Pokedex({
+  cache: true,
+  protocol: 'https',
+  cacheImages: true,
+})
 
-export const getPokemonTypesList = async () => {
+const getPokemonTypesList = async () => {
   const { results } = await client.getTypesList({ offset: 0, limit: 10000 })
   return results
 }
@@ -20,7 +24,7 @@ export const fetchPokemonTypesList = () => {
   }
 }
 
-export const getPokemonList = async () => {
+const getPokemonList = async () => {
   const { results } = await client.getPokemonsList({ offset: 0, limit: 898 })
   return results
 }
@@ -30,7 +34,7 @@ export const fetchPokemonList = () => {
   }
 }
 
-export const getPokemonListByType = async (pokemonType) => {
+const getPokemonListByType = async (pokemonType) => {
   const { pokemon } = await client.getTypeByName(pokemonType)
   return pokemon.map((pokemonData) => pokemonData.pokemon)
 }
@@ -40,7 +44,7 @@ export const fetchPokemonListByType = (pokemonType) => {
   }
 }
 
-export const getPokemonByName = async (pokemonName) => {
+const getPokemonByName = async (pokemonName) => {
   return await client.getPokemonByName(pokemonName)
 }
 export const fetchPokemonByName = (pokemonName) => {
@@ -128,7 +132,7 @@ export const fetchPokemonByName = (pokemonName) => {
   }
 }
 
-export const getPokemonSpeciesByName = async (speciesName) => {
+const getPokemonSpeciesByName = async (speciesName) => {
   const data = await client.getPokemonSpeciesByName(speciesName)
   const evolutionIdRegex = /evolution-chain\/(\d+)\/$/
   const {
@@ -186,7 +190,7 @@ export const fetchPokemonSpeciesByName = (speciesName) => {
   }
 }
 
-export const getPokemonFormByName = async (formName) => {
+const getPokemonFormByName = async (formName) => {
   return await client.getPokemonFormByName(formName)
 }
 export const fetchPokemonFormByName = (formName) => {
@@ -197,7 +201,7 @@ export const fetchPokemonFormByName = (formName) => {
   }
 }
 
-export const getPokemonEvolutionById = async (evolutionId) => {
+const getPokemonEvolutionById = async (evolutionId) => {
   const { chain } = await client.getEvolutionChainById(evolutionId)
   return chain
 }
@@ -206,6 +210,20 @@ export const fetchPokemonEvolutionById = (evolutionId) => {
     return dispatch(
       setPokemonEvolutions({
         [evolutionId]: await getPokemonEvolutionById(evolutionId),
+      })
+    )
+  }
+}
+
+const getPokemonGenerationById = async (id) => {
+  const generation = await client.getGenerationByName(id)
+  return generation
+}
+export const fetchPokemonGenerationById = (generationId) => {
+  return async (dispatch, getState) => {
+    return dispatch(
+      setPokemonGeneration({
+        [generationId]: await getPokemonGenerationById(generationId),
       })
     )
   }

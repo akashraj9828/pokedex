@@ -110,7 +110,7 @@ const PokemonDetail = () => {
   const navIds = generateNavIds(id)
   console.log({ navIds, id })
   return (
-    <div className={`min-h-screen flex flex-col`}>
+    <div className={`min-h-screen flex flex-col text-white`}>
       {/* Pokemon ID Navigation Header */}
       <div className=" flex-0">
         <div className="flex items-center justify-center w-full px-6 py-4 mx-auto">
@@ -120,9 +120,7 @@ const PokemonDetail = () => {
                 <Link key={navId} href={`/pokemon/${navId}`}>
                   <a
                     className={`rounded-md px-3 py-1 text-sm font-bold transition-colors ${
-                      navId === id
-                        ? 'text-white'
-                        : 'text-white opacity-70 hover:opacity-100'
+                      navId === id ? '' : 'opacity-70 hover:opacity-100'
                     }`}
                   >
                     {navId}
@@ -138,7 +136,7 @@ const PokemonDetail = () => {
 
       <div className="grid items-start flex-1 w-full h-full grid-cols-1 gap-8 px-6 py-8 mx-auto md:grid-cols-2">
         {/* Left Side - Pokemon Info */}
-        <div className="relative h-full space-y-6 ">
+        <div className="relative h-full mb-6 space-y-6">
           {/* Pokemon Number and Name */}
           <div>
             <div className="mb-1 text-2xl font-semibold opacity-90">
@@ -147,27 +145,26 @@ const PokemonDetail = () => {
             <h1 className="mb-4 text-4xl font-bold capitalize">
               {pokemonName}
             </h1>
-
-            {/* Japanese Name Placeholder */}
-            <div className="mb-6 ml-10 font-bold text-white text-7xl opacity-20 mix-blend-difference">
-              {japaneseName}
-            </div>
           </div>
 
-          {/* Height and Weight */}
-          <div className="flex flex-col gap-2 ml-10 tracking-widest text-md">
-            <div>
-              <div className="mb-1 font-medium">
+          {/* Japenese name, Height and Weight */}
+          <div className="text-md flex flex-col gap-2 ml-10 tracking-widest">
+            {/* Japanese Name Placeholder */}
+            <div className="font-bold text-8xl opacity-40 mix-blend-multiply">
+              {japaneseName}
+            </div>
+            <div className="mt-2 mix-blend-difference">
+              <div className="mb-0.5 font-medium">
                 Height:{' '}
-                <span className="font-light opacity-90">
+                <span className="font-normal opacity-90 text-white/80">
                   {(height / 10).toFixed(1)}m
                 </span>
               </div>
             </div>
             <div>
-              <div className="mb-1 font-medium">
+              <div className="mb-0.5 font-medium">
                 Weight:{' '}
-                <span className="font-light opacity-90">
+                <span className="font-normal opacity-90 text-white/80">
                   {(weight / 10).toFixed(1)}kg
                 </span>
               </div>
@@ -177,11 +174,11 @@ const PokemonDetail = () => {
           {/* Pokemon Image */}
           <div className="flex justify-center md:justify-start">
             {primaryImage ? (
-              <div className="-z-10 absolute bottom-[10%] right-0">
+              <div className="-z-10 absolute top-[5%] right-0">
                 <img
                   src={primaryImage}
                   alt={pokemonName}
-                  className="object-contain w-[40vw] h-[60vh]"
+                  className="object-contain w-[40vw] h-[80vh]"
                 />
               </div>
             ) : (
@@ -193,9 +190,9 @@ const PokemonDetail = () => {
         </div>
 
         {/* Right Side - Base Stats */}
-        <div className="h-full p-6 rounded-xl">
+        <div className="flex flex-col h-full gap-8 p-6 rounded-xl">
           {/* Type Icons */}
-          <div className="flex space-x-3">
+          <div className="flex gap-4">
             {types?.map((typeObj, index) => (
               <div
                 key={index}
@@ -216,29 +213,21 @@ const PokemonDetail = () => {
               </div>
             ))}
           </div>
-          <h2 className="mb-6 text-xl font-bold">Base stats:</h2>
+          <h2 className="mb-6 text-4xl font-bold">Base stats:</h2>
 
-          <div className="space-y-4">
+          <div className="flex flex-wrap gap-2 pl-6 leading-snug border-l-4 max-w-72 border-l-white/30 gap-y-4">
             {stats?.map((stat, index) => {
               const statName = stat.stat.name
               const baseStat = stat.base_stat
-              const barWidth = getStatBarWidth(baseStat)
 
               return (
-                <div key={index} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">
-                      {formatStatName(statName)}:
-                    </span>
-                    <span className="px-2 py-1 text-sm font-bold rounded bg-white/20">
-                      {baseStat}
-                    </span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-white/20">
-                    <div
-                      className="h-full transition-all duration-700 ease-out rounded-full bg-white/80"
-                      style={{ width: `${barWidth}%` }}
-                    />
+                <div
+                  key={index}
+                  className="px-3 py-1 text-base font-bold rounded-lg bg-white/95 text-black/80"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="">{formatStatName(statName)}:</span>
+                    <span className="">{baseStat}</span>
                   </div>
                 </div>
               )

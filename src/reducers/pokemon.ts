@@ -1,6 +1,11 @@
 import { PokemonDetails, PokemonSpeciesPartial } from '@/reducers/pokemon.types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Chain, NamedAPIResource, PokemonForm } from 'pokeapi-js-wrapper'
+import {
+  Chain,
+  Generation,
+  NamedAPIResource,
+  PokemonForm,
+} from 'pokeapi-js-wrapper'
 
 interface PokemonState {
   error: string
@@ -9,6 +14,7 @@ interface PokemonState {
   pokemon_details: { [pokemon_name: string]: PokemonDetails | PokemonForm }
   pokemon_evolutions: { [pokemon_id: string]: Chain }
   pokemon_species: { [pokemon_name: string]: PokemonSpeciesPartial }
+  pokemon_generation: { [pokemon_name: string]: Generation }
 }
 
 const initialState: PokemonState = {
@@ -18,6 +24,7 @@ const initialState: PokemonState = {
   pokemon_details: {},
   pokemon_evolutions: {},
   pokemon_species: {},
+  pokemon_generation: {},
 }
 
 const pokemonSlice = createSlice({
@@ -54,6 +61,12 @@ const pokemonSlice = createSlice({
     ) => {
       Object.assign(state.pokemon_species, action.payload)
     },
+    setPokemonGeneration: (
+      state,
+      action: PayloadAction<PokemonState['pokemon_generation']>
+    ) => {
+      Object.assign(state.pokemon_generation, action.payload)
+    },
   },
 })
 
@@ -63,6 +76,7 @@ export const {
   setPokemonDetails,
   setPokemonEvolutions,
   setPokemonSpecies,
+  setPokemonGeneration,
 } = pokemonSlice.actions
 
 export default pokemonSlice.reducer
