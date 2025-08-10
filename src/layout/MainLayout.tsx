@@ -12,7 +12,7 @@ const MainLayout = ({ children }: { children: any }) => {
         gridTemplateRows: `${navbar.height || 0}px 1fr`,
       }}
     >
-      <div className="fixed top-0 left-0 h-screen w-screen opacity-10 grayscale">
+      <div className="fixed top-0 left-0 w-screen h-screen opacity-10 grayscale">
         <img
           src={PokeBallSVG.src}
           className={'fixed top-[-5px] right-[-10px] h-44 md:h-60'}
@@ -26,10 +26,10 @@ const MainLayout = ({ children }: { children: any }) => {
       <div
         ref={contentRef}
         id={'main_content'}
-        className="z-50 m-auto w-full overflow-auto"
+        className="z-50 w-full m-auto overflow-auto"
         style={{ height: `calc(100vh - ${navbar.height || 0}px)` }}
       >
-        <div className="m-auto max-w-[1366px] p-4">{children}</div>
+        <div className="m-auto max-w-[1366px] p-4 min-h-screen">{children}</div>
       </div>
     </div>
   )

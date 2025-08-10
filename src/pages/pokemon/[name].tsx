@@ -1,3 +1,4 @@
+import Pagination from '@/components/Pagination'
 import { getPrimaryTypeGradient } from '@/constants/colors'
 import {
   fetchPokemonByName,
@@ -5,7 +6,6 @@ import {
 } from '@/helpers/pokedex_api'
 import MainLayout from '@/layout/MainLayout'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,7 +41,7 @@ const PokemonDetail = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-full">
           <div className="text-2xl text-gray-600">Loading...</div>
         </div>
       </MainLayout>
@@ -51,7 +51,7 @@ const PokemonDetail = () => {
   if (pokemonDetails.loading) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-full">
           <div className="text-2xl text-gray-600">Loading Pokemon data...</div>
         </div>
       </MainLayout>
@@ -92,44 +92,11 @@ const PokemonDetail = () => {
     }
   }
 
-  const getStatBarWidth = (baseStat: number) => {
-    return Math.min((baseStat / 200) * 100, 100)
-  }
-
-  // Generate Pokemon ID navigation array (shows current and surrounding IDs)
-  const generateNavIds = (currentId: number) => {
-    const navIds = []
-    for (let i = currentId - 4; i <= currentId + 4; i++) {
-      if (i >= 1 && i <= 1010) {
-        navIds.push(i)
-      }
-    }
-    return navIds
-  }
-
-  const navIds = generateNavIds(id)
-  console.log({ navIds, id })
   return (
-    <div className={`min-h-screen flex flex-col text-white`}>
+    <div className={`flex flex-col text-white`}>
       {/* Pokemon ID Navigation Header */}
       <div className=" flex-0">
-        <div className="flex items-center justify-center w-full px-6 py-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-between space-x-2">
-              {navIds.map((navId) => (
-                <Link key={navId} href={`/pokemon/${navId}`}>
-                  <a
-                    className={`rounded-md px-3 py-1 text-sm font-bold transition-colors ${
-                      navId === id ? '' : 'opacity-70 hover:opacity-100'
-                    }`}
-                  >
-                    {navId}
-                  </a>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+        <Pagination currentId={id} range={4} />
       </div>
 
       {/* Main Content */}
@@ -147,7 +114,7 @@ const PokemonDetail = () => {
             </h1>
           </div>
 
-          {/* Japenese name, Height and Weight */}
+          {/* Japanese name, Height and Weight */}
           <div className="text-md flex flex-col gap-2 ml-10 tracking-widest">
             {/* Japanese Name Placeholder */}
             <div className="font-bold text-8xl opacity-40 mix-blend-multiply">
