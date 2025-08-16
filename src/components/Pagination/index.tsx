@@ -43,34 +43,38 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
   }, [currentId, totalIds])
 
   return (
-    <div className="text-md flex items-center justify-center w-full px-6 py-4 mx-auto">
+    <div className="text-md mx-auto flex w-full items-center justify-center px-6 py-4">
       <div className="flex items-center justify-between">
         <button
           disabled={currentId <= 1}
           onClick={() => router.push(`/pokemon/${currentId - 1}`)}
-          className="px-3 py-1 font-bold transition-all duration-200 rounded-md opacity-70 hover:opacity-100 hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
+          className="rounded-md px-3 py-1 font-bold opacity-70 transition-all duration-200 hover:scale-110 hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100"
         >
           <FaChevronLeft />
         </button>
         <div className="flex items-center justify-between space-x-2">
-          {navIds.map((navId) => (
-            <Link key={navId} href={`/pokemon/${navId}`}>
-              <a
-                className={`rounded-md px-3 py-1 font-bold transition-all duration-200 hover:scale-110 ${
-                  navId === currentId
-                    ? 'opacity-100 scale-110'
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                {navId}
-              </a>
-            </Link>
-          ))}
+          {navIds.map((navId) => {
+            const isCurrent = navId === currentId
+
+            return (
+              <Link key={navId} href={`/pokemon/${navId}`}>
+                <a
+                  className={`relative rounded-md px-3 py-1 font-bold transition-all duration-200 hover:scale-110 ${
+                    isCurrent
+                      ? 'scale-110 opacity-100'
+                      : 'opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  {navId}
+                </a>
+              </Link>
+            )
+          })}
         </div>
         <button
           disabled={currentId >= totalIds}
           onClick={() => router.push(`/pokemon/${currentId + 1}`)}
-          className="px-3 py-1 font-bold transition-all duration-200 rounded-md opacity-70 hover:opacity-100 hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
+          className="rounded-md px-3 py-1 font-bold opacity-70 transition-all duration-200 hover:scale-110 hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100"
         >
           <FaChevronRight />
         </button>

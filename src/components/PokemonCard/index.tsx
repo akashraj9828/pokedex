@@ -91,7 +91,7 @@ const PokemonCard = ({ pokemonName }) => {
               </span>
             ))}
           </div>
-          <span className="absolute top-0 right-0 font-mono text-5xl text-white opacity-30">
+          <span className="absolute right-0 top-0 font-mono text-5xl text-white opacity-30">
             #{loading ? '??' : id}
           </span>
           {all_images[currentImage] && (

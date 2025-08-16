@@ -6,6 +6,7 @@ import {
 } from '@/helpers/pokedex_api'
 import MainLayout from '@/layout/MainLayout'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
+import { usePokemonPreloader } from '@/utils/use-pokemon-preloader'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,6 +28,14 @@ const PokemonDetail = () => {
   const pokemonSpecies = useSelector(
     (state) => state.pokemon.pokemon_species[name as string]
   )
+
+  // Initialize preloader hook for the current Pokemon ID
+  const currentId = pokemonDetails?.id || parseInt(name as string) || 0
+  const { isPokemonLoaded, getPreloadIds } = usePokemonPreloader(currentId, {
+    preloadCount: 4, // Preload 4 Pokemon in each direction
+    preloadImages: true,
+    delay: 300, // Start preloading after 300ms
+  })
 
   const primaryTypeGradient = getPrimaryTypeColor(pokemonDetails?.types || [])
 
