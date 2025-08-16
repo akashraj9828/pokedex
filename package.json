@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "framer-motion": "^11.0.0",
     "next": "^15.4.6",
     "pokeapi-js-wrapper": "1.2.8",
     "react": "^19.1.1",
