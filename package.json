@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
-    "next": "12.0.8",
+    "next": "^13.0.0",
     "pokeapi-js-wrapper": "1.2.8",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
     "react-infinite-scroll-component": "5.1.0",
     "react-redux": "^7.2.6"

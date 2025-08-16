@@ -29,10 +29,11 @@ const Navbar = () => {
       <div className="mx-10 mt-5 flex rounded-md shadow-lg">
         {links.map(({ title, link }) => {
           return (
-            <Link href={link}>
-              <a className="m-2 rounded-md bg-white p-4 text-xl font-semibold shadow-md">
-                {title}
-              </a>
+            <Link
+              href={link}
+              className="m-2 rounded-md bg-white p-4 text-xl font-semibold shadow-md"
+            >
+              {title}
             </Link>
           )
         })}

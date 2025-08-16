@@ -8,11 +8,18 @@ import {
 } from '@/reducers/pokemon'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
-export const client = new Pokedex({
-  cache: true,
-  protocol: 'https',
-  cacheImages: true,
-})
+// Only create client in browser
+const defineClientPokedex = () => {
+  if (typeof window !== 'undefined') {
+    return new Pokedex({
+      cache: true,
+      protocol: 'https',
+      cacheImages: true,
+    })
+  }
+  return null
+}
+export const client = defineClientPokedex()
 
 const getPokemonTypesList = async () => {
   const { results } = await client.getTypesList({ offset: 0, limit: 10000 })

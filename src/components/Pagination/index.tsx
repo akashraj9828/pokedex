@@ -57,16 +57,16 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
             const isCurrent = navId === currentId
 
             return (
-              <Link key={navId} href={`/pokemon/${navId}`}>
-                <a
-                  className={`relative rounded-md px-3 py-1 font-bold transition-all duration-200 hover:scale-110 ${
-                    isCurrent
-                      ? 'scale-110 opacity-100'
-                      : 'opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  {navId}
-                </a>
+              <Link
+                key={navId}
+                href={`/pokemon/${navId}`}
+                className={`relative rounded-md px-3 py-1 font-bold transition-all duration-200 hover:scale-110 ${
+                  isCurrent
+                    ? 'scale-110 opacity-100'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+              >
+                {navId}
               </Link>
             )
           })}
