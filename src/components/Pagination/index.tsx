@@ -41,12 +41,12 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
   }, [currentId, totalIds])
 
   return (
-    <div className="flex items-center justify-center w-full px-6 py-4 mx-auto">
+    <div className="text-md flex items-center justify-center w-full px-6 py-4 mx-auto">
       <div className="flex items-center justify-between">
         <button
           disabled={currentId <= 1}
           onClick={() => router.push(`/pokemon/${currentId - 1}`)}
-          className="px-3 py-1 text-sm font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
+          className="px-3 py-1 font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
         >
           <FaChevronLeft />
         </button>
@@ -54,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
           {navIds.map((navId) => (
             <Link key={navId} href={`/pokemon/${navId}`}>
               <a
-                className={`rounded-md px-3 py-1 text-sm font-bold transition-colors ${
+                className={`rounded-md px-3 py-1  font-bold transition-colors ${
                   navId === currentId ? '' : 'opacity-70 hover:opacity-100'
                 }`}
               >
@@ -66,7 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
         <button
           disabled={currentId >= totalIds}
           onClick={() => router.push(`/pokemon/${currentId + 1}`)}
-          className="px-3 py-1 text-sm font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
+          className="px-3 py-1 font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
         >
           <FaChevronRight />
         </button>
