@@ -5,11 +5,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { fetchPokemonByName } from '@/helpers/pokedex_api'
 import Link from 'next/link'
 import PokemonCard from '@/components/PokemonCard'
+import { useBackgroundColour } from '@/utils/use-set-background-colour'
 const limit = 10
 export default function Home() {
   const pokemons_name = useSelector((state) => state.pokemon.pokemon_list)
   const pokemons_detail = useSelector((state) => state.pokemon.pokemon_details)
-
+  useBackgroundColour('bg-white')
   // const hasMore = loadedPokemonCount !== totalPokemonCount
   // const loader = <Loader key={loadedPokemonCount} />
   const loader = <>Loading...</>
@@ -40,7 +41,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      {/* <pre className="absolute top-10 flex text-xl">
+      {/* <pre className="absolute flex text-xl top-10">
         hasMore : {String(hasMore)} | total: {pokemons_name.length} | loaded :
         {loaded_count}
       </pre> */}
@@ -56,7 +57,7 @@ export default function Home() {
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
-          <div className="grid grid-cols-1 justify-items-center gap-y-3 gap-x-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 justify-items-center gap-x-3 gap-y-3 md:grid-cols-2 xl:grid-cols-4">
             {pokemons_name.slice(0, loaded_count).map(({ name, url }) => (
               <PokemonCard pokemonName={name} key={name} />
             ))}

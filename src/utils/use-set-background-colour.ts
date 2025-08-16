@@ -7,8 +7,7 @@ export const useBackgroundColour = (colour: string) => {
 
   useEffect(() => {
     dispatch(setBackgroundColour(colour))
-    return () => {
-      dispatch(setBackgroundColour('bg-white')) // Reset to default on unmount
-    }
+    // Remove the reset on unmount to prevent background flashing during page transitions
+    // The new page will set its own background color
   }, [colour, dispatch])
 }

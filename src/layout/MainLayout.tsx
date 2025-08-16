@@ -7,7 +7,7 @@ const MainLayout = ({ children }: { children: any }) => {
   const backgroundColour = useSelector((state) => state.config.backgroundColour)
   return (
     <div
-      className={`grid w-full grid-flow-row grid-cols-1 ${backgroundColour} min-h-screen font-roboto text-sm text-gray-800 antialiased`}
+      className={`grid w-full grid-flow-row grid-cols-1 ${backgroundColour} min-h-screen font-roboto text-sm text-gray-800 antialiased transition-background duration-500 ease-in-out`}
       style={{
         gridTemplateRows: `${navbar.height || 0}px 1fr`,
       }}

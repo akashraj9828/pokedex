@@ -3,6 +3,7 @@ import { STRING } from '@/constants/string'
 import React from 'react'
 import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
 import Link from 'next/link'
+import { useBackgroundColour } from '@/utils/use-set-background-colour'
 
 const menus = [
   {
@@ -17,6 +18,7 @@ const menus = [
   },
 ]
 const Index = () => {
+  useBackgroundColour('bg-white')
   return (
     <div className="flex w-full flex-col justify-center p-5">
       <div className="top-part flex flex-col gap-10">

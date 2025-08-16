@@ -27,8 +27,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowLeft' && currentId > 1) {
+      event.preventDefault()
       router.push(`/pokemon/${currentId - 1}`)
     } else if (event.key === 'ArrowRight' && currentId < totalIds) {
+      event.preventDefault()
       router.push(`/pokemon/${currentId + 1}`)
     }
   }
@@ -46,7 +48,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
         <button
           disabled={currentId <= 1}
           onClick={() => router.push(`/pokemon/${currentId - 1}`)}
-          className="px-3 py-1 font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
+          className="px-3 py-1 font-bold transition-all duration-200 rounded-md opacity-70 hover:opacity-100 hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
         >
           <FaChevronLeft />
         </button>
@@ -54,8 +56,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
           {navIds.map((navId) => (
             <Link key={navId} href={`/pokemon/${navId}`}>
               <a
-                className={`rounded-md px-3 py-1  font-bold transition-colors ${
-                  navId === currentId ? '' : 'opacity-70 hover:opacity-100'
+                className={`rounded-md px-3 py-1 font-bold transition-all duration-200 hover:scale-110 ${
+                  navId === currentId
+                    ? 'opacity-100 scale-110'
+                    : 'opacity-70 hover:opacity-100'
                 }`}
               >
                 {navId}
@@ -66,7 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
         <button
           disabled={currentId >= totalIds}
           onClick={() => router.push(`/pokemon/${currentId + 1}`)}
-          className="px-3 py-1 font-bold transition-colors rounded-md opacity-70 hover:opacity-100"
+          className="px-3 py-1 font-bold transition-all duration-200 rounded-md opacity-70 hover:opacity-100 hover:scale-110 disabled:opacity-30 disabled:hover:scale-100"
         >
           <FaChevronRight />
         </button>
