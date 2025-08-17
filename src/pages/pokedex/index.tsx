@@ -5,6 +5,7 @@ import Search from '@/components/Search'
 import { fetchPokemonByName } from '@/helpers/pokedex_api'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { useEffect, useMemo, useState } from 'react'
+import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
 const limit = 50
 export default function Home() {
   const pokemons_name = useSelector((state) => state.pokemon.pokemon_list)
@@ -131,21 +132,20 @@ export default function Home() {
             next={onLoadMore}
             hasMore={hasMore}
             loader={
-              <div className="flex w-full flex-col items-center justify-center space-y-4 py-8">
-                <div className="flex space-x-2">
-                  <div className="h-3 w-3 animate-bounce rounded-full bg-blue-500"></div>
-                  <div
-                    className="h-3 w-3 animate-bounce rounded-full bg-blue-500"
-                    style={{ animationDelay: '0.1s' }}
-                  ></div>
-                  <div
-                    className="h-3 w-3 animate-bounce rounded-full bg-blue-500"
-                    style={{ animationDelay: '0.2s' }}
-                  ></div>
-                </div>
+              <div className="flex w-full items-center justify-center space-x-4 py-8">
+                <img
+                  src={PokeBallSVG.src}
+                  alt="Loading"
+                  className="h-6 w-6 animate-spin opacity-60"
+                />
                 <p className="font-medium text-gray-600">
                   Loading more Pokemon...
                 </p>
+                <img
+                  src={PokeBallSVG.src}
+                  alt="Loading"
+                  className="h-6 w-6 animate-spin opacity-60"
+                />
               </div>
             }
           >
