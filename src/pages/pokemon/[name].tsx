@@ -202,6 +202,7 @@ const PokemonDetail: NextPageWithLayout = () => {
                 >
                   <EvolutionChainDetail
                     evolutionId={pokemonSpecies?.evolutionId}
+                    currentPokemonName={pokemonName}
                   />
                 </motion.div>
               )}

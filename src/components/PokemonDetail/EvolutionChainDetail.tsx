@@ -10,6 +10,7 @@ import { Chain } from 'pokeapi-js-wrapper'
 
 interface EvolutionChainDetailProps {
   evolutionId: string | null
+  currentPokemonName?: string
 }
 
 const contentVariants = {
@@ -36,7 +37,10 @@ interface EvolutionStep {
   item?: string
 }
 
-const EvolutionChainDetail = ({ evolutionId }: EvolutionChainDetailProps) => {
+const EvolutionChainDetail = ({
+  evolutionId,
+  currentPokemonName,
+}: EvolutionChainDetailProps) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const [evolutionSteps, setEvolutionSteps] = useState<EvolutionStep[]>([])
@@ -66,17 +70,17 @@ const EvolutionChainDetail = ({ evolutionId }: EvolutionChainDetailProps) => {
           const pokemonId = parseInt(species.url.split('/').slice(-2, -1)[0])
           const pokemonName = species.name
 
-          // Dispatch to fetch Pokemon details if not already loaded
-          if (!pokemonDetails[pokemonName]) {
-            dispatch(fetchPokemonByName(pokemonName))
+          // Dispatch to fetch Pokemon details using ID if not already loaded
+          if (!pokemonDetails[pokemonId]) {
+            dispatch(fetchPokemonByName(pokemonId))
           }
 
-          const pokemonData = pokemonDetails[pokemonName]
+          const pokemonData = pokemonDetails[pokemonId]
           const image = pokemonData?.images?.front?.[0] || ''
 
           steps.push({
             id: pokemonId,
-            name: pokemonName,
+            name: pokemonData?.name || pokemonName, // Use API response name if available, fallback to species name
             image,
             level: evolutionDetails?.min_level || undefined,
             trigger: evolutionDetails?.trigger?.name || undefined,
@@ -159,32 +163,46 @@ const EvolutionChainDetail = ({ evolutionId }: EvolutionChainDetailProps) => {
     )
   }
 
-  const renderPokemonStep = (step: EvolutionStep, index: number) => (
-    <div key={step.id} className="flex flex-col items-center">
-      <button
-        onClick={() => router.push(`/pokemon/${step.name}`)}
-        className="group relative cursor-pointer"
-      >
-        <div className="h-20 w-20 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm transition-transform group-hover:scale-105 group-hover:bg-white/30">
-          {step.image ? (
-            <img
-              src={step.image}
-              alt={step.name}
-              className="h-full w-full object-contain p-2"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-            </div>
-          )}
-        </div>
-      </button>
-      <p className="mt-2 text-center text-sm font-medium capitalize text-white">
-        {step.name}
-      </p>
-    </div>
-  )
+  const renderPokemonStep = (step: EvolutionStep, index: number) => {
+    const isCurrentPokemon = step.name === currentPokemonName
+
+    return (
+      <div key={step.id} className="flex flex-col items-center">
+        <button
+          onClick={() => router.push(`/pokemon/${step.id}`)}
+          className="group relative cursor-pointer"
+        >
+          <div
+            className={`h-20 w-20 overflow-hidden rounded-full backdrop-blur-sm transition-all group-hover:scale-105 ${
+              isCurrentPokemon
+                ? 'bg-white/40 shadow-lg ring-2 ring-white/60'
+                : 'bg-white/20 group-hover:bg-white/30'
+            }`}
+          >
+            {step.image ? (
+              <img
+                src={step.image}
+                alt={step.name}
+                className="h-full w-full object-contain p-2"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              </div>
+            )}
+          </div>
+        </button>
+        <p
+          className={`mt-2 text-center text-sm font-medium capitalize ${
+            isCurrentPokemon ? 'font-bold text-white' : 'text-white'
+          }`}
+        >
+          {step.name}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <motion.div
