@@ -1,33 +1,84 @@
+import { ReduxState } from '@/reducers'
 import { useDebounce } from '@/utils/use-debounce'
+import Link from 'next/link'
+import { NamedAPIResource } from 'pokeapi-js-wrapper'
 import { useEffect, useRef, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
+import { useSelector } from 'react-redux'
+
+interface SearchProps {
+  onChange?: (value: any) => void
+  placeholder?: string
+  stayOpen?: boolean
+  fullWidth?: boolean
+  focusOnInit?: boolean
+  showResults?: boolean
+}
 
 const Search = ({
   onChange = (value: any) => null,
-  placeholder = 'Search...',
+  placeholder = 'Search Pokemon...',
   stayOpen = true,
   fullWidth = true,
   focusOnInit = false,
-}) => {
+  showResults = true,
+}: SearchProps) => {
   const [focused, setFocused] = useState(stayOpen)
   const [searchText, setSearchText] = useState<string | undefined>(undefined)
+  const [showDropdown, setShowDropdown] = useState(false)
   const debouncedSearch = useDebounce(searchText, 300)
+
+  // Get Pokemon list from Redux state
+  const pokemonList = useSelector(
+    (state: ReduxState) => state.pokemon.pokemon_list
+  )
+
+  // Filter Pokemon based on search text
+  const filteredPokemon =
+    debouncedSearch && showResults
+      ? pokemonList
+          .filter((pokemon: NamedAPIResource) =>
+            pokemon.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+          )
+          .slice(0, 10) // Limit to 10 results
+      : []
 
   useEffect(() => {
     onChange && onChange(debouncedSearch)
+    setShowDropdown(
+      debouncedSearch &&
+        debouncedSearch.length > 0 &&
+        showResults &&
+        filteredPokemon.length > 0
+    )
     return () => {}
-  }, [debouncedSearch])
+  }, [debouncedSearch, showResults, filteredPokemon.length])
 
   const inputRef: any = useRef(null)
+  const containerRef: any = useRef(null)
 
   useEffect(() => {
     if (inputRef.current) {
       focusOnInit && inputRef.current.focus()
     }
   }, [inputRef, focusOnInit])
+
+  const handleClickOutside = (e: any) => {
+    if (containerRef.current && !containerRef.current.contains(e.target)) {
+      setShowDropdown(false)
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <div
-      className={`flex ${
+      ref={containerRef}
+      className={`relative flex ${
         fullWidth ? 'w-full' : 'max-w-xs'
       } navbar-search mr-2 rounded-md border-0`}
       onFocus={() => {
@@ -45,10 +96,18 @@ const Search = ({
           ref={inputRef}
           // type='search'
           name="search"
-          value={searchText}
+          value={searchText || ''}
           onChange={(e) => {
             setSearchText(e.target.value)
           }}
+          onFocus={() =>
+            setShowDropdown(
+              debouncedSearch &&
+                debouncedSearch.length > 0 &&
+                showResults &&
+                filteredPokemon.length > 0
+            )
+          }
           placeholder={placeholder}
           className={`${
             focused ? (fullWidth ? 'w-full' : 'w-40') : 'w-0'
@@ -68,6 +127,39 @@ const Search = ({
           />
         </button>
       </div>
+
+      {/* Search Results Dropdown */}
+      {showDropdown && (
+        <div className="absolute left-0 top-full z-50 mt-2 max-h-80 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+          {filteredPokemon.map((pokemon: NamedAPIResource, index: number) => (
+            <Link
+              href={`/pokemon/${pokemon.name}`}
+              key={pokemon.name}
+              onClick={() => {
+                setShowDropdown(false)
+                setSearchText('')
+              }}
+              className="flex cursor-pointer items-center border-b border-gray-100 px-4 py-3 last:border-b-0 hover:bg-gray-50"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
+                  <span className="text-xs font-medium text-gray-600">
+                    #{pokemon.url.split('/').slice(-2, -1)[0]}
+                  </span>
+                </div>
+                <span className="font-medium capitalize text-gray-800">
+                  {pokemon.name}
+                </span>
+              </div>
+            </Link>
+          ))}
+          {filteredPokemon.length === 0 && debouncedSearch && (
+            <div className="px-4 py-3 text-center text-gray-500">
+              No Pokemon found matching "{debouncedSearch}"
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
