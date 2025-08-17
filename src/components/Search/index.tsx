@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 
 const Search = ({
-  onChange = (value) => null,
+  onChange = (value: any) => null,
   placeholder = 'Search...',
   stayOpen = true,
   fullWidth = true,
   focusOnInit = false,
 }) => {
   const [focused, setFocused] = useState(stayOpen)
-  const [searchText, setSearchText] = useState(undefined)
+  const [searchText, setSearchText] = useState<string | undefined>(undefined)
   const debouncedSearch = useDebounce(searchText, 300)
 
   useEffect(() => {

@@ -19,7 +19,7 @@ const defineClientPokedex = () => {
   }
   return null
 }
-export const client = defineClientPokedex()
+export const client = defineClientPokedex() as Pokedex
 
 const getPokemonTypesList = async () => {
   const { results } = await client.getTypesList({ offset: 0, limit: 10000 })

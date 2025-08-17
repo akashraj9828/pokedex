@@ -11,7 +11,9 @@ interface PokemonState {
   error: string
   pokemon_types: NamedAPIResource[]
   pokemon_list: NamedAPIResource[]
-  pokemon_details: { [pokemon_name: string]: PokemonDetails | PokemonForm }
+  pokemon_details: {
+    [pokemon_name: string | number]: PokemonDetails | PokemonForm
+  }
   pokemon_evolutions: { [pokemon_id: string]: Chain }
   pokemon_species: { [pokemon_name: string]: PokemonSpeciesPartial }
   pokemon_generation: { [pokemon_name: string]: Generation }

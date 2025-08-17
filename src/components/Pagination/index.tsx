@@ -14,8 +14,8 @@ const Pagination = ({ currentId, range }: PaginationProps) => {
   const router = useRouter()
   const totalIds = useSelector((state) => state.pokemon.pokemon_list.length)
 
-  const generateNavIds = (currentId: number) => {
-    const navIds = []
+  const generateNavIds = (currentId: number): number[] => {
+    const navIds: number[] = []
     for (let i = currentId - range; i <= currentId + range; i++) {
       if (i >= 1 && i <= totalIds) {
         navIds.push(i)
@@ -24,7 +24,7 @@ const Pagination = ({ currentId, range }: PaginationProps) => {
     return navIds
   }
 
-  const navIds = generateNavIds(currentId)
+  const navIds: number[] = generateNavIds(currentId)
 
   // Calculate the offset to center the active page
   const currentIndex = navIds.indexOf(currentId)
@@ -114,15 +114,16 @@ const Pagination = ({ currentId, range }: PaginationProps) => {
                   >
                     <Link
                       href={`/pokemon/${navId}`}
-                      className={`relative block rounded-md px-3 py-1 font-bold transition-all duration-200 ${isCurrent
-                        ? ' text-white'
-                        : 'opacity-70 hover:bg-gray-100 hover:opacity-100 dark:hover:bg-gray-800'
-                        }`}
+                      className={`relative block rounded-md px-3 py-1 font-bold transition-all duration-200 ${
+                        isCurrent
+                          ? ' text-white'
+                          : 'opacity-70 hover:bg-gray-100 hover:opacity-100 dark:hover:bg-gray-800'
+                      }`}
                     >
                       {navId}
                       {isCurrent && (
                         <motion.div
-                          className="absolute  rounded-md"
+                          className="absolute rounded-md"
                           layoutId="activeBackground"
                           transition={{
                             type: 'spring',

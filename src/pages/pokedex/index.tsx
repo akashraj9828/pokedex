@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
-import { useEffect, useMemo, useState } from 'react'
-import { fetchPokemonByName } from '@/helpers/pokedex_api'
-import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux'
 import PokemonCard from '@/components/PokemonCard'
+import { fetchPokemonByName } from '@/helpers/pokedex_api'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
+import { useEffect, useMemo } from 'react'
 const limit = 50
 export default function Home() {
   const pokemons_name = useSelector((state) => state.pokemon.pokemon_list)
