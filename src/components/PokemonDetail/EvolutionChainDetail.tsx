@@ -15,7 +15,7 @@ interface EvolutionChainDetailProps {
 
 const contentVariants = {
   initial: {
-    opacity: 0,
+    opacity: 1,
     y: 20,
   },
   animate: {
@@ -55,8 +55,10 @@ const EvolutionChainDetail = ({
   )
 
   useEffect(() => {
-    if (evolutionId && !evolutionChain) {
-      dispatch(fetchPokemonEvolutionById(evolutionId))
+    if (evolutionId) {
+      if (!evolutionChain) {
+        dispatch(fetchPokemonEvolutionById(evolutionId))
+      }
     }
   }, [evolutionId, evolutionChain, dispatch])
 
@@ -213,7 +215,13 @@ const EvolutionChainDetail = ({
     >
       <h3 className="mb-6 text-xl font-bold text-white">Evolution Chain</h3>
 
-      {evolutionSteps.length > 1 ? (
+      {evolutionSteps.length === 0 ? (
+        // Still loading Pokemon data for evolution steps
+        <div className="flex items-center justify-center py-8">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+          <span className="ml-3 text-white">Loading Pokemon data...</span>
+        </div>
+      ) : evolutionSteps.length > 1 ? (
         <div className="space-y-8">
           {/* Regular Evolution Chain */}
           <div className="flex items-center justify-center">
