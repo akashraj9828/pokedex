@@ -10,6 +10,71 @@ import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { motion, AnimatePresence } from 'framer-motion'
+
+// Animation variants for page transitions
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    x: 10, // Reduced from 20 to minimize layout shift
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -10, // Reduced from -20 to minimize layout shift
+    transition: {
+      duration: 0.3,
+      ease: 'easeIn',
+    },
+  },
+}
+
+// Animation variants for content elements
+const contentVariants = {
+  initial: {
+    opacity: 0,
+    y: 0,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+}
+
+// Stagger animation for stats
+const statsContainerVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const statItemVariants = {
+  initial: {
+    opacity: 0,
+    scale: 0.8,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+}
 
 const PokemonDetail: NextPageWithLayout = () => {
   const {
@@ -48,17 +113,43 @@ const PokemonDetail: NextPageWithLayout = () => {
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading...</div>
-      </div>
+      <motion.div 
+        className="flex h-full items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.div 
+          className="text-2xl text-gray-600"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
+          Loading...
+        </motion.div>
+      </motion.div>
     )
   }
 
   if (pokemonDetails.loading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <div className="text-2xl text-gray-600">Loading Pokemon data...</div>
-      </div>
+      <motion.div 
+        className="flex h-full items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.div 
+          className="text-2xl text-gray-600"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
+          Loading Pokemon data...
+        </motion.div>
+      </motion.div>
     )
   }
 
@@ -97,23 +188,39 @@ const PokemonDetail: NextPageWithLayout = () => {
   }
 
   return (
-    <>
-      {/* Main Content */}
-      <div className="mx-auto grid h-full w-full flex-1 grid-cols-1 items-start gap-8 px-6 py-8 md:grid-cols-2">
+    <div className="min-h-screen w-full">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={Array.isArray(name) ? name[0] : name} // This ensures re-animation when Pokemon changes
+          variants={pageVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          layout // This helps with layout transitions
+          className="mx-auto grid h-full w-full flex-1 grid-cols-1 items-start gap-8 px-6 py-8 md:grid-cols-2"
+          style={{ minHeight: 'calc(100vh - 50px)' }} // Ensure consistent minimum height
+        >
         {/* Left Side - Pokemon Info */}
-        <div className="relative mb-6 h-full space-y-6">
+        <motion.div 
+          className="relative mb-6 h-full space-y-6"
+          variants={contentVariants}
+          layout // Smooth layout transitions
+        >
           {/* Pokemon Number and Name */}
-          <div>
+          <motion.div variants={contentVariants}>
             <div className="mb-1 text-2xl font-semibold opacity-90">
               #{id.toString().padStart(3, '0')}
             </div>
             <h1 className="mb-4 text-4xl font-bold capitalize">
               {pokemonName}
             </h1>
-          </div>
+          </motion.div>
 
           {/* Japanese name, Height and Weight */}
-          <div className="text-md ml-10 flex flex-col gap-2 tracking-widest">
+          <motion.div 
+            className="text-md ml-10 flex flex-col gap-2 tracking-widest"
+            variants={contentVariants}
+          >
             {/* Japanese Name Placeholder */}
             <div className="text-8xl font-bold opacity-40 mix-blend-multiply">
               {japaneseName}
@@ -134,34 +241,77 @@ const PokemonDetail: NextPageWithLayout = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Pokemon Image */}
-          <div className="flex justify-center md:justify-start">
+          <motion.div 
+            className="flex justify-center md:justify-start"
+            variants={contentVariants}
+          >
             {primaryImage ? (
-              <div className="absolute right-0 top-[5%] -z-10">
-                <img
+              <motion.div 
+                className="absolute right-0 top-[5%] -z-10"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              >
+                <motion.img
                   src={primaryImage}
                   alt={pokemonName}
                   className="h-[80vh] w-[40vw] object-contain"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                  onLoad={(e) => {
+                    // Only run on client side
+                    if (typeof window !== 'undefined' && e.currentTarget) {
+                      // Add a subtle scale animation when image loads
+                      e.currentTarget.style.transform = 'scale(1.02)'
+                      setTimeout(() => {
+                        if (e.currentTarget) {
+                          e.currentTarget.style.transform = 'scale(1)'
+                          e.currentTarget.style.transition = 'transform 0.3s ease-out'
+                        }
+                      }, 50)
+                    }
+                  }}
                 />
-              </div>
+              </motion.div>
             ) : (
-              <div className="flex h-48 w-48 items-center justify-center text-white/50">
+              <motion.div 
+                className="flex h-48 w-48 items-center justify-center text-white/50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
                 No image available
-              </div>
+              </motion.div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Side - Base Stats */}
-        <div className="flex h-full flex-col gap-8 rounded-xl p-6">
+        <motion.div 
+          className="flex h-full flex-col gap-8 rounded-xl p-6"
+          variants={contentVariants}
+          layout // Smooth layout transitions
+        >
           {/* Type Icons */}
-          <div className="flex gap-4">
+          <motion.div 
+            className="flex gap-4"
+            variants={contentVariants}
+          >
             {types?.map((typeObj, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="rounded-full bg-white p-3 backdrop-blur-sm"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ 
+                  duration: 0.4, 
+                  ease: 'easeOut',
+                  delay: index * 0.1 
+                }}
               >
                 <img
                   src={`/types/${
@@ -171,36 +321,52 @@ const PokemonDetail: NextPageWithLayout = () => {
                   alt={typeObj.type.name}
                   className="h-8 w-8"
                   onError={(e) => {
-                    // Fallback to text if image fails
-                    e.currentTarget.style.display = 'none'
+                    // Only run on client side
+                    if (typeof window !== 'undefined' && e.currentTarget) {
+                      // Fallback to text if image fails
+                      e.currentTarget.style.display = 'none'
+                    }
                   }}
                 />
-              </div>
+              </motion.div>
             ))}
-          </div>
-          <h2 className="mb-6 text-4xl font-bold">Base stats:</h2>
+          </motion.div>
+          
+          <motion.h2 
+            className="mb-6 text-4xl font-bold"
+            variants={contentVariants}
+          >
+            Base stats:
+          </motion.h2>
 
-          <div className="flex max-w-72 flex-wrap gap-2 gap-y-4 border-l-4 border-l-white/30 pl-6 leading-snug">
+          <motion.div 
+            className="flex max-w-72 flex-wrap gap-2 gap-y-4 border-l-4 border-l-white/30 pl-6 leading-snug"
+            variants={statsContainerVariants}
+            initial="initial"
+            animate="animate"
+          >
             {stats?.map((stat, index) => {
               const statName = stat.stat.name
               const baseStat = stat.base_stat
 
               return (
-                <div
+                <motion.div
                   key={index}
                   className="rounded-lg bg-white/95 px-3 py-1 text-base font-bold text-black/80"
+                  variants={statItemVariants}
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="">{formatStatName(statName)}:</span>
                     <span className="">{baseStat}</span>
                   </div>
-                </div>
+                </motion.div>
               )
             })}
-          </div>
-        </div>
-      </div>
-    </>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+    </div>
   )
 }
 

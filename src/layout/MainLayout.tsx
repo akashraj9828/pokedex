@@ -1,10 +1,25 @@
 import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+
 const MainLayout = ({ children }: { children: any }) => {
   const contentRef = useRef()
   const navbar = useSelector((state) => state.config.navbar)
   const backgroundColour = useSelector((state) => state.config.backgroundColour)
+  
+  // Prevent scrollbar flashing during page transitions
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== 'undefined' && document) {
+      document.body.style.overflowY = 'auto'
+      document.documentElement.style.overflowY = 'auto'
+    }
+    
+    return () => {
+      // Cleanup if needed
+    }
+  }, [])
+  
   return (
     <div
       className={`grid w-full grid-flow-row grid-cols-1 ${backgroundColour} min-h-screen font-roboto text-sm text-gray-800 antialiased transition-background duration-500 ease-in-out`}
