@@ -1,9 +1,11 @@
 import Search from '@/components/Search'
 import { STRING } from '@/constants/string'
-import React from 'react'
+import React, { useEffect } from 'react'
 import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
 import Link from 'next/link'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
+import { fetchPokemonList, fetchPokemonTypesList } from '@/helpers/pokedex_api'
+import { useDispatch } from 'react-redux'
 
 const menus = [
   {
@@ -19,6 +21,11 @@ const menus = [
 ]
 const Index = () => {
   useBackgroundColour('bg-white')
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchPokemonTypesList() as any)
+    dispatch(fetchPokemonList() as any)
+  }, [dispatch])
   return (
     <div className="flex w-full flex-col justify-center p-5">
       <div className="top-part flex flex-col gap-10">

@@ -33,7 +33,7 @@ export const fetchPokemonTypesList = () => {
 }
 
 const getPokemonList = async () => {
-  const { results } = await client.getPokemonsList({ offset: 0, limit: 898 })
+  const { results } = await client.getPokemonsList({ offset: 0, limit: 10000 })
   return results
 }
 export const fetchPokemonList = () => {
