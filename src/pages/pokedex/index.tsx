@@ -5,9 +5,12 @@ import Search from '@/components/Search'
 import { fetchPokemonByName } from '@/helpers/pokedex_api'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
+import { IoChevronBack } from 'react-icons/io5'
 import PokeBallSVG from '@/assets/img/pokeball_bnw.svg'
 const limit = 50
 export default function Home() {
+  const router = useRouter()
   const pokemons_name = useSelector((state) => state.pokemon.pokemon_list)
   const pokemons_detail = useSelector((state) => state.pokemon.pokemon_details)
   const [searchQuery, setSearchQuery] = useState('')
@@ -70,9 +73,18 @@ export default function Home() {
       <div className="mb-6 w-full max-w-6xl px-4">
         {/* Mobile Layout - Stacked */}
         <div className="block md:hidden">
-          <h1 className="mb-4 text-center text-4xl font-bold text-gray-800">
-            Pokedex {searchQuery && `- "${searchQuery}"`}
-          </h1>
+          <div className="mb-4 flex items-center justify-center">
+            <button
+              onClick={() => router.push('/')}
+              className="absolute left-4 rounded-lg bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-gray-200"
+              aria-label="Back to home"
+            >
+              <IoChevronBack className="h-5 w-5" />
+            </button>
+            <h1 className="text-center text-4xl font-bold text-gray-800">
+              Pokedex {searchQuery && `- "${searchQuery}"`}
+            </h1>
+          </div>
           <div className="w-full">
             <Search
               onChange={handleSearchChange}
@@ -85,9 +97,18 @@ export default function Home() {
 
         {/* Desktop Layout - Side by Side */}
         <div className="hidden md:flex md:items-center md:justify-between">
-          <h1 className="text-4xl font-bold text-gray-800">
-            Pokedex {searchQuery && `- "${searchQuery}"`}
-          </h1>
+          <div className="flex items-center">
+            <button
+              onClick={() => router.push('/')}
+              className="mr-4 rounded-lg bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-gray-200"
+              aria-label="Back to home"
+            >
+              <IoChevronBack className="h-5 w-5" />
+            </button>
+            <h1 className="text-4xl font-bold text-gray-800">
+              Pokedex {searchQuery && `- "${searchQuery}"`}
+            </h1>
+          </div>
           <div className="ml-8 w-full max-w-md">
             <Search
               onChange={handleSearchChange}
