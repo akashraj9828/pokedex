@@ -78,19 +78,38 @@ export default function Home() {
         loaded :{loaded_count}
       </pre> */}
 
-      {/* Search Section */}
-      <div className="mb-6 w-full max-w-4xl px-4">
-        <Search
-          onChange={handleSearchChange}
-          placeholder="Search Pokemon in Pokedex..."
-          showResults={false}
-          fullWidth={true}
-        />
-      </div>
+      {/* Header Section with Title and Search */}
+      <div className="mb-6 w-full max-w-6xl px-4">
+        {/* Mobile Layout - Stacked */}
+        <div className="block md:hidden">
+          <h1 className="mb-4 text-center text-4xl font-bold text-gray-800">
+            Pokedex {searchQuery && `- "${searchQuery}"`}
+          </h1>
+          <div className="w-full">
+            <Search
+              onChange={handleSearchChange}
+              placeholder="Search Pokemon..."
+              showResults={false}
+              fullWidth={true}
+            />
+          </div>
+        </div>
 
-      <span className="my-5 w-full text-center text-4xl font-bold text-gray-800 md:text-left">
-        Pokedex {searchQuery && `- "${searchQuery}"`}
-      </span>
+        {/* Desktop Layout - Side by Side */}
+        <div className="hidden md:flex md:items-center md:justify-between">
+          <h1 className="text-4xl font-bold text-gray-800">
+            Pokedex {searchQuery && `- "${searchQuery}"`}
+          </h1>
+          <div className="ml-8 w-full max-w-md">
+            <Search
+              onChange={handleSearchChange}
+              placeholder="Search Pokemon in Pokedex..."
+              showResults={false}
+              fullWidth={true}
+            />
+          </div>
+        </div>
+      </div>
       <div className="flex">
         {/* <Temp /> */}
         {filteredPokemonNames.length === 0 && searchQuery ? (
