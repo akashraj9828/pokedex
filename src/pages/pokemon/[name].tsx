@@ -4,9 +4,8 @@ import {
   fetchPokemonByName,
   fetchPokemonSpeciesByName,
 } from '@/helpers/pokedex_api'
-import MainLayout from '@/layout/MainLayout'
-import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { usePokemonPreloader } from '@/utils/use-pokemon-preloader'
+import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
