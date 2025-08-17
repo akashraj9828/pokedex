@@ -8,7 +8,7 @@ import { usePokemonPreloader } from '@/utils/use-pokemon-preloader'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   PokemonHeader,
@@ -17,6 +17,7 @@ import {
   TypeIcons,
   BaseStats,
   LoadingState,
+  EvolutionChainDetail,
 } from '@/components/PokemonDetail'
 
 // Animation variants for page transitions
@@ -64,6 +65,9 @@ const PokemonDetail: NextPageWithLayout = () => {
     query: { name },
   } = useRouter()
   const dispatch = useDispatch()
+  const [activeTab, setActiveTab] = useState<'stats' | 'evolution' | 'moves'>(
+    'stats'
+  )
 
   useEffect(() => {
     name && dispatch(fetchPokemonByName(name))
@@ -143,17 +147,80 @@ const PokemonDetail: NextPageWithLayout = () => {
               height={height}
               weight={weight}
             />
+            <TypeIcons types={types} />
             <PokemonImage imageUrl={primaryImage} name={pokemonName} />
           </motion.div>
 
-          {/* Right Side - Base Stats */}
+          {/* Right Side - Tabs and Content */}
           <motion.div
-            className="flex h-full flex-col gap-8 rounded-xl p-6"
+            className="flex h-full flex-col gap-6 rounded-xl p-6"
             variants={contentVariants}
             layout // Smooth layout transitions
           >
-            <TypeIcons types={types} />
-            <BaseStats stats={stats} />
+            {/* Tab Navigation */}
+            <div className="flex space-x-1 rounded-lg bg-white/10 p-1 backdrop-blur-sm">
+              {[
+                { id: 'stats', label: 'Base Stats' },
+                { id: 'evolution', label: 'Evolution' },
+                { id: 'moves', label: 'Moves' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-white text-gray-800 shadow-sm'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            <div className="flex-1">
+              {activeTab === 'stats' && (
+                <motion.div
+                  key="stats"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <BaseStats stats={stats} />
+                </motion.div>
+              )}
+
+              {activeTab === 'evolution' && (
+                <motion.div
+                  key="evolution"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <EvolutionChainDetail
+                    evolutionId={pokemonSpecies?.evolutionId}
+                  />
+                </motion.div>
+              )}
+
+              {activeTab === 'moves' && (
+                <motion.div
+                  key="moves"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+                >
+                  <p className="text-center text-white/70">
+                    Moves information coming soon...
+                  </p>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       </AnimatePresence>
