@@ -481,13 +481,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
-  version: 15.7.15
-  resolution: "@types/prop-types@npm:15.7.15"
-  checksum: 10c0/b59aad1ad19bf1733cf524fd4e618196c6c7690f48ee70a327eb450a42aab8e8a063fbe59ca0a5701aebe2d92d582292c0fb845ea57474f6a15f6994b0e260b2
-  languageName: node
-  linkType: hard
-
 "@types/react-redux@npm:^7.1.20":
   version: 7.1.34
   resolution: "@types/react-redux@npm:7.1.34"
@@ -500,13 +493,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@types/react@npm:17.0.2"
+"@types/react@npm:19.1.10":
+  version: 19.1.10
+  resolution: "@types/react@npm:19.1.10"
   dependencies:
-    "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/6b48673db526015c45a0dc036394cdc7d5fd48388b3f05f8f433e74c08fb4c80e5acfc66baa2c7cc8a091d0d8524bcb00397bc7c6286fcefad4bf4cef959d764
+  checksum: 10c0/fb583deacd0a815e2775dc1b9f764532d8cacb748ddd2c2914805a46c257ce6c237b4078f44009692074db212ab61a390301c6470f07f5aa5bfdeb78a2acfda1
   languageName: node
   linkType: hard
 
@@ -2617,7 +2609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.1.1":
+"react@npm:19.1.1":
   version: 19.1.1
   resolution: "react@npm:19.1.1"
   checksum: 10c0/8c9769a2dfd02e603af6445058325e6c8a24b47b185d0e461f66a6454765ddcaecb3f0a90184836c68bb509f3c38248359edbc42f0d07c23eb500a5c30c87b4e
@@ -2750,7 +2742,7 @@ __metadata:
   dependencies:
     "@reduxjs/toolkit": "npm:^2.8.2"
     "@types/node": "npm:17.0.4"
-    "@types/react": "npm:^19.1.10"
+    "@types/react": "npm:19.1.10"
     autoprefixer: "npm:^10.4.0"
     framer-motion: "npm:^11.0.0"
     next: "npm:^15.4.6"
@@ -2758,7 +2750,7 @@ __metadata:
     postcss: "npm:^8.4.5"
     prettier: "npm:^2.5.1"
     prettier-plugin-tailwindcss: "npm:^0.1.5"
-    react: "npm:^19.1.1"
+    react: "npm:19.1.1"
     react-dom: "npm:^19.1.1"
     react-icons: "npm:5.3.0"
     react-infinite-scroll-component: "npm:5.1.0"
