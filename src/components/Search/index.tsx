@@ -26,6 +26,7 @@ const Search = ({
   const [focused, setFocused] = useState(stayOpen)
   const [searchText, setSearchText] = useState<string | undefined>(undefined)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [inputFocused, setInputFocused] = useState(false)
   const debouncedSearch = useDebounce(searchText, 300)
 
   // Get Pokemon list from Redux state
@@ -33,26 +34,25 @@ const Search = ({
     (state: ReduxState) => state.pokemon.pokemon_list
   )
 
-  // Filter Pokemon based on search text
-  const filteredPokemon =
-    debouncedSearch && showResults
+  // Filter Pokemon based on search text or show first 10 when focused without search
+  const filteredPokemon = showResults
+    ? debouncedSearch && debouncedSearch.length > 0
       ? pokemonList
           .filter((pokemon: NamedAPIResource) =>
             pokemon.name.toLowerCase().includes(debouncedSearch.toLowerCase())
           )
           .slice(0, 10) // Limit to 10 results
+      : inputFocused
+      ? pokemonList.slice(0, 10) // Show first 10 Pokemon when focused but no search text
       : []
+    : []
 
   useEffect(() => {
     onChange && onChange(debouncedSearch)
-    setShowDropdown(
-      debouncedSearch &&
-        debouncedSearch.length > 0 &&
-        showResults &&
-        filteredPokemon.length > 0
-    )
+    // Show dropdown when input is focused and we have results, or when there's search text
+    setShowDropdown(inputFocused && showResults && filteredPokemon.length > 0)
     return () => {}
-  }, [debouncedSearch, showResults, filteredPokemon.length])
+  }, [debouncedSearch, showResults, filteredPokemon.length, inputFocused])
 
   const inputRef: any = useRef(null)
   const containerRef: any = useRef(null)
@@ -66,6 +66,7 @@ const Search = ({
   const handleClickOutside = (e: any) => {
     if (containerRef.current && !containerRef.current.contains(e.target)) {
       setShowDropdown(false)
+      setInputFocused(false)
     }
   }
   useEffect(() => {
@@ -100,14 +101,15 @@ const Search = ({
           onChange={(e) => {
             setSearchText(e.target.value)
           }}
-          onFocus={() =>
-            setShowDropdown(
-              debouncedSearch &&
-                debouncedSearch.length > 0 &&
-                showResults &&
-                filteredPokemon.length > 0
-            )
-          }
+          onFocus={() => {
+            setInputFocused(true)
+          }}
+          onBlur={(e) => {
+            // Only hide if clicking outside the container
+            if (!containerRef.current?.contains(e.relatedTarget)) {
+              setInputFocused(false)
+            }
+          }}
           placeholder={placeholder}
           className={`${
             focused ? (fullWidth ? 'w-full' : 'w-40') : 'w-0'
@@ -137,6 +139,7 @@ const Search = ({
               key={pokemon.name}
               onClick={() => {
                 setShowDropdown(false)
+                setInputFocused(false)
                 setSearchText('')
               }}
               className="flex cursor-pointer items-center border-b border-gray-100 px-4 py-3 last:border-b-0 hover:bg-gray-50"
@@ -153,11 +156,13 @@ const Search = ({
               </div>
             </Link>
           ))}
-          {filteredPokemon.length === 0 && debouncedSearch && (
-            <div className="px-4 py-3 text-center text-gray-500">
-              No Pokemon found matching "{debouncedSearch}"
-            </div>
-          )}
+          {filteredPokemon.length === 0 &&
+            debouncedSearch &&
+            debouncedSearch.length > 0 && (
+              <div className="px-4 py-3 text-center text-gray-500">
+                No Pokemon found matching "{debouncedSearch}"
+              </div>
+            )}
         </div>
       )}
     </div>
