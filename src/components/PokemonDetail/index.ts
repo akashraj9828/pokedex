@@ -1,0 +1,6 @@
+export { default as PokemonHeader } from './PokemonHeader'
+export { default as PokemonInfo } from './PokemonInfo'
+export { default as PokemonImage } from './PokemonImage'
+export { default as TypeIcons } from './TypeIcons'
+export { default as BaseStats } from './BaseStats'
+export { default as LoadingState } from './LoadingState' 
