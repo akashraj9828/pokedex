@@ -28,7 +28,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
 
   // Calculate the offset to center the active page
   const currentIndex = navIds.indexOf(currentId)
-  const itemWidth = 48 // Approximate width including margins
+  const itemWidth = 35 // Approximate width including margins
   const containerWidth = 320 // w-80 = 320px
   const centerPosition = containerWidth / 2
 
@@ -114,16 +114,15 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
                   >
                     <Link
                       href={`/pokemon/${navId}`}
-                      className={`relative block rounded-md px-3 py-1 font-bold transition-all duration-200 ${
-                        isCurrent
-                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50'
-                          : 'opacity-70 hover:bg-gray-100 hover:opacity-100 dark:hover:bg-gray-800'
-                      }`}
+                      className={`relative block rounded-md px-3 py-1 font-bold transition-all duration-200 ${isCurrent
+                        ? ' text-white'
+                        : 'opacity-70 hover:bg-gray-100 hover:opacity-100 dark:hover:bg-gray-800'
+                        }`}
                     >
                       {navId}
                       {isCurrent && (
                         <motion.div
-                          className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-400 to-blue-600"
+                          className="absolute  rounded-md"
                           layoutId="activeBackground"
                           transition={{
                             type: 'spring',
