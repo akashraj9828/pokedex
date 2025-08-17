@@ -7,6 +7,22 @@ const PokemonCard = ({ pokemonName }) => {
   const poke_detail = useSelector(
     (state) => state.pokemon.pokemon_details[pokemonName]
   )
+
+  // Add null check before destructuring
+  if (!poke_detail) {
+    return (
+      <div
+        className={`group relative m-1 flex h-[13rem] w-[20rem] cursor-pointer select-none rounded-2xl border-0 ${getPokemonCardColor(
+          'normal'
+        )} p-6`}
+      >
+        <div className="flex w-full items-center justify-center">
+          <span className="text-xl font-bold text-white/80">Loading...</span>
+        </div>
+      </div>
+    )
+  }
+
   const {
     loading,
     name,
@@ -50,7 +66,7 @@ const PokemonCard = ({ pokemonName }) => {
     <Link
       href={`/pokemon/${name}`}
       draggable={false}
-      className={`group relative m-1 flex h-[13rem] w-[20rem] cursor-pointer select-none rounded-2xl  border-0 ${getPokemonCardColor(
+      className={`group relative m-1 flex h-[13rem] w-[20rem] cursor-pointer select-none rounded-2xl border-0 ${getPokemonCardColor(
         pokemon_type
       )} p-6`}
     >

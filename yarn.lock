@@ -2763,7 +2763,7 @@ __metadata:
     react-icons: "npm:^4.3.1"
     react-infinite-scroll-component: "npm:5.1.0"
     react-redux: "npm:^7.2.6"
-    tailwind-config-viewer: "npm:^1.6.3"
+    tailwind-config-viewer: "npm:^2.0.4"
     tailwindcss: "npm:3.4.17"
     typescript: "npm:^5.9.2"
   languageName: unknown
@@ -3098,9 +3098,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-config-viewer@npm:^1.6.3":
-  version: 1.7.3
-  resolution: "tailwind-config-viewer@npm:1.7.3"
+"tailwind-config-viewer@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "tailwind-config-viewer@npm:2.0.4"
   dependencies:
     "@koa/router": "npm:^12.0.1"
     commander: "npm:^6.0.0"
@@ -3115,7 +3115,7 @@ __metadata:
   bin:
     tailwind-config-viewer: cli/index.js
     tailwindcss-config-viewer: cli/index.js
-  checksum: 10c0/02cf42d1e6832653334c270d0209060baf71d7ff5fa9b0c4d76c57b5336e31fd972b5e07b7b2c8319276b92c625c07690174a23b1147969860f08d3b91914376
+  checksum: 10c0/f193e9e211f134e9e064709ed2a7da668a13230b44f941bf6f5b4846afe4bf9d0166dd7f6d709f038e41f360f167fc7a58e231dba41b964813c7bc46894acd15
   languageName: node
   linkType: hard
 

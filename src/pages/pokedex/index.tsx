@@ -6,11 +6,11 @@ import { fetchPokemonByName } from '@/helpers/pokedex_api'
 import Link from 'next/link'
 import PokemonCard from '@/components/PokemonCard'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
-const limit = 10
+const limit = 50
 export default function Home() {
   const pokemons_name = useSelector((state) => state.pokemon.pokemon_list)
   const pokemons_detail = useSelector((state) => state.pokemon.pokemon_details)
-  useBackgroundColour('bg-white')
+  useBackgroundColour('bg-slate-100')
   // const hasMore = loadedPokemonCount !== totalPokemonCount
   // const loader = <Loader key={loadedPokemonCount} />
   const loader = <>Loading...</>
