@@ -23,16 +23,36 @@ const contentVariants = {
 const PokemonImage = ({ imageUrl, name }: PokemonImageProps) => {
   return (
     <motion.div
-      className="flex justify-center md:justify-start"
+      className="flex justify-center md:justify-start "
       variants={contentVariants}
     >
       {imageUrl ? (
         <motion.div
-          className="absolute right-0 top-[5%] -z-10"
+          className="absolute right-0 top-[5%] -z-10 "
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
+          <div
+            className="h-[80vh] w-[40vw] object-contain"
+            style={{
+              backgroundImage: `url(${imageUrl})`,
+              backgroundPositionY: 'center',
+              backgroundSize: 'cover',
+              backgroundOrigin: 'border-box',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: '0% 0%',
+              display: 'block',
+              position: 'absolute',
+              right: -10,
+              scale: 1.02,
+              top: 10,
+              opacity: 0.07,
+              filter: 'brightness(0) invert(0)',
+              // transform: 'rotateY(180deg)',
+            }}
+          />
+
           <motion.img
             src={imageUrl}
             alt={name}
