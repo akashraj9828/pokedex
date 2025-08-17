@@ -31,14 +31,15 @@ export default function Home() {
   }, [filteredPokemonNames, pokemons_detail])
 
   const loaded_count = useMemo(() => {
-    return Object.keys(pokemons_detail).length
-  }, [pokemons_detail])
+    return displayablePokemon.length
+  }, [displayablePokemon])
 
-  const hasMore = displayablePokemon.length < filteredPokemonNames.length
+  const hasMore = loaded_count < filteredPokemonNames.length
 
   const dispatch = useDispatch()
 
   const onLoadMore = () => {
+    console.log('Load more...')
     // Find Pokemon in filtered list that haven't been loaded yet
     const unloadedPokemon = filteredPokemonNames.filter((pokemon) => {
       const details = pokemons_detail[pokemon.name]
@@ -54,34 +55,17 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // Load Pokemon when filtered list changes or when we have no loaded Pokemon
-    if (
-      filteredPokemonNames.length > 0 &&
-      displayablePokemon.length != filteredPokemonNames.length
-    ) {
-      onLoadMore()
-    }
-  }, [filteredPokemonNames, displayablePokemon.length])
-
-  // Initial load effect
-  useEffect(() => {
     if (loaded_count === 0 && pokemons_name.length > 0) {
       onLoadMore()
     }
   }, [pokemons_name, loaded_count])
 
-  // Handle search change
   const handleSearchChange = (query: string) => {
     setSearchQuery(query || '')
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start py-2">
-      {/* <pre className="absolute flex text-xl top-10">
-        hasMore : {String(hasMore)} | total: {filteredPokemonNames.length} |
-        loaded :{loaded_count}
-      </pre> */}
-
       {/* Header Section with Title and Search */}
       <div className="mb-6 w-full max-w-6xl px-4">
         {/* Mobile Layout - Stacked */}
@@ -114,6 +98,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* <pre className="absolute z-50 flex text-xl bg-white top-10">
+        hasMore : {String(hasMore)} | total: {filteredPokemonNames.length} |
+        loaded :{loaded_count}
+      </pre> */}
       <div className="flex">
         {/* <Temp /> */}
         {filteredPokemonNames.length === 0 && searchQuery ? (
@@ -128,7 +117,7 @@ export default function Home() {
         ) : (
           <InfiniteScroll
             scrollableTarget="main_content"
-            dataLength={filteredPokemonNames.length}
+            dataLength={loaded_count}
             next={onLoadMore}
             hasMore={hasMore}
             loader={
@@ -150,9 +139,11 @@ export default function Home() {
             }
           >
             <div className="grid grid-cols-1 justify-items-center gap-x-3 gap-y-3 md:grid-cols-2 xl:grid-cols-4">
-              {displayablePokemon.map(({ name, url }) => (
-                <PokemonCard pokemonName={name} key={name} />
-              ))}
+              {filteredPokemonNames
+                .slice(0, loaded_count)
+                .map(({ name, url }) => (
+                  <PokemonCard pokemonName={name} key={name} />
+                ))}
             </div>
           </InfiniteScroll>
         )}
