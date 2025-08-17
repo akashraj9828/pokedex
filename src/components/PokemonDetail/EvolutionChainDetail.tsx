@@ -161,6 +161,9 @@ const EvolutionChainDetail = ({
             d="M9 5l7 7-7 7"
           />
         </svg>
+        <div className="mt-2 text-xs font-medium text-transparent">
+          {currentStep.level && 'dummy'}
+        </div>
       </div>
     )
   }
@@ -170,6 +173,8 @@ const EvolutionChainDetail = ({
 
     return (
       <div key={step.id} className="flex flex-col items-center">
+        {/* Extra spacing above image to center arrows with image */}
+        <div className="h-6"></div>
         <button
           onClick={() => router.push(`/pokemon/${step.id}`)}
           className="group relative cursor-pointer"
@@ -196,7 +201,7 @@ const EvolutionChainDetail = ({
           </div>
         </button>
         <p
-          className={`mt-2 text-center text-sm font-medium capitalize ${
+          className={`mt-3 text-center text-sm font-medium capitalize ${
             isCurrentPokemon ? 'font-bold text-white' : 'text-white'
           }`}
         >
