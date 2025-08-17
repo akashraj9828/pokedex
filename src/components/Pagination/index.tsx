@@ -11,14 +11,6 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
-  useEffect(() => {
-    console.log('Remount')
-
-    return () => {
-      console.log('Unmount')
-    }
-  }, [])
-
   const router = useRouter()
   const totalIds = useSelector((state) => state.pokemon.pokemon_list.length)
 
@@ -50,10 +42,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowLeft' && currentId > 1) {
       event.preventDefault()
-      router.push(`/pokemon/${currentId - 1}`, undefined, { shallow: true })
+      router.push(`/pokemon/${currentId - 1}`)
     } else if (event.key === 'ArrowRight' && currentId < totalIds) {
       event.preventDefault()
-      router.push(`/pokemon/${currentId + 1}`, undefined, { shallow: true })
+      router.push(`/pokemon/${currentId + 1}`)
     }
   }
 
@@ -70,11 +62,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
       <div className="flex items-center justify-between">
         <motion.button
           disabled={currentId <= 1}
-          onClick={() =>
-            router.push(`/pokemon/${currentId - 1}`, undefined, {
-              shallow: true,
-            })
-          }
+          onClick={() => router.push(`/pokemon/${currentId - 1}`)}
           className="rounded-md px-3 py-1 font-bold opacity-70 transition-all duration-200 hover:scale-110 hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100"
           whileHover={{ scale: currentId > 1 ? 1.1 : 1 }}
           whileTap={{ scale: currentId > 1 ? 0.95 : 1 }}
@@ -155,11 +143,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentId, range }) => {
 
         <motion.button
           disabled={currentId >= totalIds}
-          onClick={() =>
-            router.push(`/pokemon/${currentId + 1}`, undefined, {
-              shallow: true,
-            })
-          }
+          onClick={() => router.push(`/pokemon/${currentId + 1}`)}
           className="rounded-md px-3 py-1 font-bold opacity-70 transition-all duration-200 hover:scale-110 hover:opacity-100 disabled:opacity-30 disabled:hover:scale-100"
           whileHover={{ scale: currentId < totalIds ? 1.1 : 1 }}
           whileTap={{ scale: currentId < totalIds ? 0.95 : 1 }}

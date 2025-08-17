@@ -4,13 +4,14 @@ import {
   fetchPokemonByName,
   fetchPokemonSpeciesByName,
 } from '@/helpers/pokedex_api'
+import PersistentLayout, { NextPageWithLayout } from '@/layout/PersistentLayout'
 import { usePokemonPreloader } from '@/utils/use-pokemon-preloader'
 import { useBackgroundColour } from '@/utils/use-set-background-colour'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const PokemonDetail = () => {
+const PokemonDetail: NextPageWithLayout = () => {
   const {
     query: { name },
   } = useRouter()
@@ -96,14 +97,8 @@ const PokemonDetail = () => {
   }
 
   return (
-    <div className={`flex flex-col text-white`}>
-      {/* Pokemon ID Navigation Header */}
-      <div className=" flex-0">
-        <Pagination currentId={id} range={4} />
-      </div>
-
+    <>
       {/* Main Content */}
-
       <div className="mx-auto grid h-full w-full flex-1 grid-cols-1 items-start gap-8 px-6 py-8 md:grid-cols-2">
         {/* Left Side - Pokemon Info */}
         <div className="relative mb-6 h-full space-y-6">
@@ -205,8 +200,13 @@ const PokemonDetail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
+}
+
+// Define the layout for this page
+PokemonDetail.getLayout = function getLayout(page: ReactElement) {
+  return <PersistentLayout showPagination={true}>{page}</PersistentLayout>
 }
 
 export default PokemonDetail
