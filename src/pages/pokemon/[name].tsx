@@ -141,13 +141,13 @@ const PokemonDetail: NextPageWithLayout = () => {
             variants={contentVariants}
             layout // Smooth layout transitions
           >
-            <PokemonHeader id={id} name={pokemonName} />
+            <PokemonHeader id={id} name={pokemonName} types={types} />
             <PokemonInfo
               japaneseName={japaneseName}
               height={height}
               weight={weight}
             />
-            <TypeIcons types={types} />
+            {/* <TypeIcons types={types} /> */}
             <PokemonImage imageUrl={primaryImage} name={pokemonName} />
           </motion.div>
 

@@ -5,6 +5,7 @@ import { IoChevronBack } from 'react-icons/io5'
 interface PokemonHeaderProps {
   id: number
   name: string
+  types?: Array<{ type: { name: string } }>
 }
 
 const contentVariants = {
@@ -22,7 +23,7 @@ const contentVariants = {
   },
 }
 
-const PokemonHeader = ({ id, name }: PokemonHeaderProps) => {
+const PokemonHeader = ({ id, name, types }: PokemonHeaderProps) => {
   const router = useRouter()
 
   return (
@@ -39,7 +40,36 @@ const PokemonHeader = ({ id, name }: PokemonHeaderProps) => {
           <div className="text-2xl font-semibold opacity-90">
             #{id.toString().padStart(3, '0')}
           </div>
-          <h1 className="text-4xl font-bold capitalize">{name}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-4xl font-bold capitalize">{name}</h1>
+            {/* Type Icons */}
+            {types && types.length > 0 && (
+              <div className="flex gap-2">
+                {types.map((typeObj, typeIndex) => (
+                  <div
+                    key={typeIndex}
+                    className="rounded-full bg-white/20 p-2 backdrop-blur-sm"
+                  >
+                    <img
+                      src={`/types/${
+                        typeObj.type.name.charAt(0).toUpperCase() +
+                        typeObj.type.name.slice(1)
+                      }.png`}
+                      alt={typeObj.type.name}
+                      className="h-6 w-6"
+                      onError={(e) => {
+                        // Only run on client side
+                        if (typeof window !== 'undefined' && e.currentTarget) {
+                          // Hide the image if it fails to load
+                          e.currentTarget.style.display = 'none'
+                        }
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>
