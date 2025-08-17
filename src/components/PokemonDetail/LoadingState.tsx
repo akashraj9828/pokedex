@@ -4,9 +4,9 @@ interface LoadingStateProps {
   message?: string
 }
 
-const LoadingState: React.FC<LoadingStateProps> = ({
+const LoadingState = ({
   message = 'Loading...',
-}) => {
+}: LoadingStateProps) => {
   return (
     <motion.div
       className="flex h-full items-center justify-center"

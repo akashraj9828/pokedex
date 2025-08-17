@@ -25,7 +25,7 @@ const contentVariants = {
   },
 }
 
-const TypeIcons: React.FC<TypeIconsProps> = ({ types }) => {
+const TypeIcons = ({ types }: TypeIconsProps) => {
   return (
     <motion.div className="flex gap-4" variants={contentVariants}>
       {types?.map((typeObj, index) => (
@@ -41,10 +41,9 @@ const TypeIcons: React.FC<TypeIconsProps> = ({ types }) => {
           }}
         >
           <img
-            src={`/types/${
-              typeObj.type.name.charAt(0).toUpperCase() +
+            src={`/types/${typeObj.type.name.charAt(0).toUpperCase() +
               typeObj.type.name.slice(1)
-            }.png`}
+              }.png`}
             alt={typeObj.type.name}
             className="h-8 w-8"
             onError={(e) => {

@@ -20,7 +20,7 @@ const contentVariants = {
   },
 }
 
-const PokemonHeader: React.FC<PokemonHeaderProps> = ({ id, name }) => {
+const PokemonHeader = ({ id, name }: PokemonHeaderProps) => {
   return (
     <motion.div variants={contentVariants}>
       <div className="mb-1 text-2xl font-semibold opacity-90">

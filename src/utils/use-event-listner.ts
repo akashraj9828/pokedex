@@ -1,18 +1,5 @@
 import { RefObject, useEffect, useRef } from 'react'
 
-function useEventListener<K extends keyof WindowEventMap>(
-  eventName: K,
-  handler: (event: WindowEventMap[K]) => void
-): void
-function useEventListener<
-  K extends keyof HTMLElementEventMap,
-  T extends HTMLElement = HTMLDivElement
->(
-  eventName: K,
-  handler: (event: HTMLElementEventMap[K]) => void,
-  element: RefObject<T>
-): void
-
 function useEventListener<
   KW extends keyof WindowEventMap,
   KH extends keyof HTMLElementEventMap,
@@ -25,7 +12,7 @@ function useEventListener<
   element?: RefObject<T>
 ) {
   // Create a ref that stores handler
-  const savedHandler = useRef<typeof handler>()
+  const savedHandler = useRef<typeof handler>(null)
 
   useEffect(() => {
     // Define the listening target

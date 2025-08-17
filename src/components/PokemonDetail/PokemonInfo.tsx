@@ -21,11 +21,11 @@ const contentVariants = {
   },
 }
 
-const PokemonInfo: React.FC<PokemonInfoProps> = ({
+const PokemonInfo = ({
   japaneseName,
   height,
   weight,
-}) => {
+}: PokemonInfoProps) => {
   return (
     <motion.div
       className="text-md ml-10 flex flex-col gap-2 tracking-widest"

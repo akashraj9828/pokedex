@@ -50,7 +50,7 @@ const statItemVariants = {
   },
 }
 
-const BaseStats: React.FC<BaseStatsProps> = ({ stats }) => {
+const BaseStats = ({ stats }: BaseStatsProps) => {
   const formatStatName = (statName: string) => {
     switch (statName) {
       case 'hp':

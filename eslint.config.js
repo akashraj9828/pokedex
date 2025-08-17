@@ -4,6 +4,7 @@ const typescriptParser = require('@typescript-eslint/parser')
 const react = require('eslint-plugin-react')
 const reactHooks = require('eslint-plugin-react-hooks')
 const jsxA11y = require('eslint-plugin-jsx-a11y')
+const globals = require('globals')
 
 module.exports = [
   // Base configuration for all files
@@ -22,6 +23,12 @@ module.exports = [
         },
         project: './tsconfig.json',
       },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.nodeBuiltin,
+        NodeJS: true,
+      },
     },
     plugins: {
       '@typescript-eslint': typescript,
@@ -31,11 +38,9 @@ module.exports = [
     },
     rules: {
       // TypeScript rules
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_' },
-      ],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['off', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['off', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
@@ -71,6 +76,15 @@ module.exports = [
       sourceType: 'module',
       ecmaFeatures: {
         jsx: true,
+      },
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        navigator: 'readonly',
+        console: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: {

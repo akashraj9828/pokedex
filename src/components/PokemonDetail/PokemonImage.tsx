@@ -20,7 +20,7 @@ const contentVariants = {
   },
 }
 
-const PokemonImage: React.FC<PokemonImageProps> = ({ imageUrl, name }) => {
+const PokemonImage = ({ imageUrl, name }: PokemonImageProps) => {
   return (
     <motion.div
       className="flex justify-center md:justify-start"

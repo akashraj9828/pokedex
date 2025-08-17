@@ -36,6 +36,7 @@ const Index = () => {
           >
             <span className="font-bold text-white/90">{title}</span>
             <img
+              alt={'Pokeball'}
               src={PokeBallSVG.src}
               className={
                 'absolute bottom-[-5px] right-[-10px] h-44 opacity-20 contrast-[10] duration-300 group-hover:scale-110 md:h-32'
