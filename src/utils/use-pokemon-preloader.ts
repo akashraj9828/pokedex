@@ -38,7 +38,7 @@ export const usePokemonPreloader = (
   const { preloadCount = 3, preloadImages = true, delay = 500 } = options
 
   const dispatch = useDispatch()
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout>(null)
   const { preloadImages: preloadImageUrls, isImagePreloaded } =
     useImagePreloader({
       maxConcurrent: 2,

@@ -144,12 +144,14 @@ export const getPrimaryTypeColor = (
   types: Array<{ type: { name: string } }>
 ): string => {
   if (!types || types.length === 0) return getPokemonTypeColor('normal')
-  return getPokemonTypeColor(types[0].type.name)
+  return getPokemonTypeColor(types?.[0]?.type?.name || 'normal')
 }
 
 export const getPrimaryTypeGradient = (
   types: Array<{ type: { name: string } }>
 ): string => {
-  if (!types || types.length === 0) return getPokemonTypeGradient('normal')
-  return getPokemonTypeGradient(types[0].type.name)
+  if (!types || types.length === 0) {
+    return getPokemonTypeGradient('normal')
+  }
+  return getPokemonTypeGradient(types?.[0]?.type?.name || 'normal')
 }

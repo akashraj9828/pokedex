@@ -6,6 +6,7 @@ import {
   setPokemonSpecies,
   setPokemonTypes,
 } from '@/reducers/pokemon'
+import { PokemonDetails } from '@/reducers/pokemon.types'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
 // Only create client in browser
@@ -133,7 +134,7 @@ export const fetchPokemonByName = (pokemonName) => {
           stats,
           types,
           images: { front, back },
-        },
+        } as unknown as PokemonDetails,
       })
     )
   }
@@ -172,7 +173,7 @@ const getPokemonSpeciesByName = async (speciesName) => {
     varieties,
   } = data
   const evolutionId =
-    data.evolution_chain.url.match(evolutionIdRegex)[1] || null
+    data?.evolution_chain?.url?.match?.(evolutionIdRegex)?.[1] || null
   return {
     evolutionId,
     name,
