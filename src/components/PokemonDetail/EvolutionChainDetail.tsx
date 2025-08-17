@@ -35,6 +35,7 @@ interface EvolutionStep {
   level?: number
   trigger?: string
   item?: string
+  types?: Array<{ type: { name: string } }>
 }
 
 const EvolutionChainDetail = ({
@@ -87,6 +88,7 @@ const EvolutionChainDetail = ({
             level: evolutionDetails?.min_level || undefined,
             trigger: evolutionDetails?.trigger?.name || undefined,
             item: evolutionDetails?.item?.name || undefined,
+            types: pokemonData?.types || undefined,
           })
         }
 
@@ -168,19 +170,25 @@ const EvolutionChainDetail = ({
     )
   }
 
-  const renderPokemonStep = (step: EvolutionStep, index: number) => {
+  const renderPokemonStep = (
+    step: EvolutionStep,
+    index: number,
+    isGridLayout: boolean = false
+  ) => {
     const isCurrentPokemon = step.name === currentPokemonName
+    const imageSize = isGridLayout ? 'h-16 w-16' : 'h-20 w-20'
+    const spacingTop = isGridLayout ? 'h-2' : 'h-6'
 
     return (
       <div key={step.id} className="flex flex-col items-center">
         {/* Extra spacing above image to center arrows with image */}
-        <div className="h-6"></div>
+        <div className={spacingTop}></div>
         <button
           onClick={() => router.push(`/pokemon/${step.id}`)}
           className="group relative cursor-pointer"
         >
           <div
-            className={`h-20 w-20 overflow-hidden rounded-full backdrop-blur-sm transition-all group-hover:scale-105 ${
+            className={`${imageSize} overflow-hidden rounded-full backdrop-blur-sm transition-all group-hover:scale-105 ${
               isCurrentPokemon
                 ? 'bg-white/40 shadow-lg ring-2 ring-white/60'
                 : 'bg-white/20 group-hover:bg-white/30'
@@ -207,6 +215,33 @@ const EvolutionChainDetail = ({
         >
           {step.name}
         </p>
+        {/* Type Icons */}
+        {step.types && step.types.length > 0 && (
+          <div className="mt-2 flex gap-1">
+            {step.types.map((typeObj, typeIndex) => (
+              <div
+                key={typeIndex}
+                className="rounded-full bg-white/20 p-1 backdrop-blur-sm"
+              >
+                <img
+                  src={`/types/${
+                    typeObj.type.name.charAt(0).toUpperCase() +
+                    typeObj.type.name.slice(1)
+                  }.png`}
+                  alt={typeObj.type.name}
+                  className={isGridLayout ? 'h-3 w-3' : 'h-4 w-4'}
+                  onError={(e) => {
+                    // Only run on client side
+                    if (typeof window !== 'undefined' && e.currentTarget) {
+                      // Hide the image if it fails to load
+                      e.currentTarget.style.display = 'none'
+                    }
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     )
   }
@@ -229,14 +264,55 @@ const EvolutionChainDetail = ({
       ) : evolutionSteps.length > 1 ? (
         <div className="space-y-8">
           {/* Regular Evolution Chain */}
-          <div className="flex items-center justify-center">
-            {evolutionSteps.map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                {renderPokemonStep(step, index)}
-                {renderEvolutionArrow(index)}
+          {evolutionSteps.length <= 4 ? (
+            // Linear layout for smaller evolution chains (4 or fewer Pokemon)
+            <div className="flex items-center justify-center overflow-x-auto">
+              <div className="flex items-center space-x-2 px-4">
+                {evolutionSteps.map((step, index) => (
+                  <div key={step.id} className="flex items-center">
+                    {renderPokemonStep(step, index)}
+                    {renderEvolutionArrow(index)}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            // Grid layout for larger evolution chains (like Eevee)
+            <div className="space-y-6">
+              {/* Base Pokemon (usually the first one) */}
+              {evolutionSteps[0] && (
+                <div className="flex justify-center">
+                  {renderPokemonStep(evolutionSteps[0], 0, true)}
+                </div>
+              )}
+
+              {/* Arrow pointing down */}
+              <div className="flex justify-center">
+                <svg
+                  className="h-6 w-6 text-white/60"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+
+              {/* Evolution grid for remaining Pokemon */}
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                {evolutionSteps.slice(1).map((step, index) => (
+                  <div key={step.id} className="flex justify-center">
+                    {renderPokemonStep(step, index + 1, true)}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Mega Evolution Section (if any) */}
           {megaEvolutions.length > 0 && (
@@ -244,32 +320,34 @@ const EvolutionChainDetail = ({
               <h4 className="mb-4 text-lg font-semibold text-white">
                 Mega Evolution
               </h4>
-              <div className="flex items-center justify-center space-x-8">
-                {megaEvolutions.map((mega, index) => (
-                  <div key={mega.id} className="flex items-center">
-                    {index > 0 && (
-                      <div className="flex flex-col items-center justify-center px-4">
-                        <div className="mb-2 text-xs font-medium text-white/80">
-                          Mega Stone
+              <div className="flex items-center justify-center space-x-8 overflow-x-auto">
+                <div className="flex items-center space-x-4 px-4">
+                  {megaEvolutions.map((mega, index) => (
+                    <div key={mega.id} className="flex items-center">
+                      {index > 0 && (
+                        <div className="flex flex-col items-center justify-center px-4">
+                          <div className="mb-2 text-xs font-medium text-white/80">
+                            Mega Stone
+                          </div>
+                          <svg
+                            className="h-6 w-6 text-white/60"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
                         </div>
-                        <svg
-                          className="h-6 w-6 text-white/60"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    {renderPokemonStep(mega, index)}
-                  </div>
-                ))}
+                      )}
+                      {renderPokemonStep(mega, index)}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

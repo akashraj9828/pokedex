@@ -1,3 +1,11 @@
+import {
+  BaseStats,
+  EvolutionChainDetail,
+  LoadingState,
+  PokemonHeader,
+  PokemonImage,
+  PokemonInfo,
+} from '@/components/PokemonDetail'
 import { getPrimaryTypeColor } from '@/constants/colors'
 import {
   fetchPokemonByName,
@@ -10,15 +18,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  PokemonHeader,
-  PokemonInfo,
-  PokemonImage,
-  TypeIcons,
-  BaseStats,
-  LoadingState,
-  EvolutionChainDetail,
-} from '@/components/PokemonDetail'
 
 // Animation variants for page transitions
 const pageVariants = {
