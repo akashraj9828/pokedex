@@ -18,7 +18,7 @@ const Search = ({
     return () => {}
   }, [debouncedSearch])
 
-  const inputRef: any = useRef()
+  const inputRef: any = useRef(null)
 
   useEffect(() => {
     if (inputRef.current) {
