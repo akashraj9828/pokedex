@@ -54,7 +54,10 @@ export default function Home() {
 
   useEffect(() => {
     // Load Pokemon when filtered list changes or when we have no loaded Pokemon
-    if (filteredPokemonNames.length > 0 && displayablePokemon.length === 0) {
+    if (
+      filteredPokemonNames.length > 0 &&
+      displayablePokemon.length != filteredPokemonNames.length
+    ) {
       onLoadMore()
     }
   }, [filteredPokemonNames, displayablePokemon.length])
@@ -124,10 +127,27 @@ export default function Home() {
         ) : (
           <InfiniteScroll
             scrollableTarget="main_content"
-            dataLength={displayablePokemon.length}
+            dataLength={filteredPokemonNames.length}
             next={onLoadMore}
             hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
+            loader={
+              <div className="flex w-full flex-col items-center justify-center space-y-4 py-8">
+                <div className="flex space-x-2">
+                  <div className="h-3 w-3 animate-bounce rounded-full bg-blue-500"></div>
+                  <div
+                    className="h-3 w-3 animate-bounce rounded-full bg-blue-500"
+                    style={{ animationDelay: '0.1s' }}
+                  ></div>
+                  <div
+                    className="h-3 w-3 animate-bounce rounded-full bg-blue-500"
+                    style={{ animationDelay: '0.2s' }}
+                  ></div>
+                </div>
+                <p className="font-medium text-gray-600">
+                  Loading more Pokemon...
+                </p>
+              </div>
+            }
           >
             <div className="grid grid-cols-1 justify-items-center gap-x-3 gap-y-3 md:grid-cols-2 xl:grid-cols-4">
               {displayablePokemon.map(({ name, url }) => (
