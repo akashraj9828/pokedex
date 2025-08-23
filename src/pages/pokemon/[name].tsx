@@ -119,7 +119,7 @@ const PokemonDetail: NextPageWithLayout = () => {
     images,
   } = pokemonDetails
 
-  const primaryImage = images?.front?.[0] || images?.back?.[0] || null
+  const primaryImage = images?.front?.[0] || images?.back?.[0] || undefined
 
   return (
     <div className="min-h-screen w-full">
@@ -140,14 +140,21 @@ const PokemonDetail: NextPageWithLayout = () => {
             variants={contentVariants}
             layout // Smooth layout transitions
           >
-            <PokemonHeader id={id} name={pokemonName} types={types} />
+            <PokemonHeader
+              id={id || 0}
+              name={pokemonName || 'Unknown'}
+              types={types}
+            />
             <PokemonInfo
               japaneseName={japaneseName}
               height={height}
               weight={weight}
             />
             {/* <TypeIcons types={types} /> */}
-            <PokemonImage imageUrl={primaryImage} name={pokemonName} />
+            <PokemonImage
+              imageUrl={primaryImage}
+              name={pokemonName || 'Unknown'}
+            />
           </motion.div>
 
           {/* Right Side - Tabs and Content */}
