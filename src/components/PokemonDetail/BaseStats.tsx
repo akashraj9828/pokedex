@@ -11,21 +11,6 @@ interface BaseStatsProps {
   stats: Stat[]
 }
 
-const contentVariants = {
-  initial: {
-    opacity: 0,
-    y: 0,
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-}
-
 // Stagger animation for stats
 const statsContainerVariants = {
   animate: {
@@ -72,7 +57,12 @@ const BaseStats = ({ stats }: BaseStatsProps) => {
 
   return (
     <>
-      <motion.h2 className="mb-6 text-4xl font-bold" variants={contentVariants}>
+      <motion.h2
+        className="mb-6 text-4xl font-bold"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
         Base stats:
       </motion.h2>
 

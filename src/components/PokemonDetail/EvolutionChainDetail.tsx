@@ -13,21 +13,6 @@ interface EvolutionChainDetailProps {
   currentPokemonName?: string
 }
 
-const contentVariants = {
-  initial: {
-    opacity: 1,
-    y: 20,
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-}
-
 interface EvolutionStep {
   id: number
   name: string
@@ -128,7 +113,9 @@ const EvolutionChainDetail = ({
   if (!evolutionChain) {
     return (
       <motion.div
-        variants={contentVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
       >
         <div className="flex items-center justify-center py-8">
@@ -248,9 +235,9 @@ const EvolutionChainDetail = ({
 
   return (
     <motion.div
-      variants={contentVariants}
-      initial="initial"
-      animate="animate"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
     >
       <h3 className="mb-6 text-xl font-bold text-white">Evolution Chain</h3>

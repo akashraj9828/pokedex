@@ -2,6 +2,7 @@ import {
   BaseStats,
   EvolutionChainDetail,
   LoadingState,
+  MovesDetail,
   PokemonHeader,
   PokemonImage,
   PokemonInfo,
@@ -117,6 +118,7 @@ const PokemonDetail: NextPageWithLayout = () => {
     stats,
     types,
     images,
+    moves,
   } = pokemonDetails
 
   const primaryImage = images?.front?.[0] || images?.back?.[0] || undefined
@@ -220,11 +222,8 @@ const PokemonDetail: NextPageWithLayout = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
                 >
-                  <p className="text-center text-white/70">
-                    Moves information coming soon...
-                  </p>
+                  <MovesDetail moves={moves || []} />
                 </motion.div>
               )}
             </div>

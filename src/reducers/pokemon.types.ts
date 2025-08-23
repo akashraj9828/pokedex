@@ -2,12 +2,6 @@ import { PokemonSpecies, PokemonType, StatElement } from 'pokeapi-js-wrapper'
 
 export type PokemonDetails = {
   loading: boolean
-  id: number
-  name: string
-  weight: number
-  height: number
-  stats: StatElement[]
-  types: PokemonType[]
   images: {
     front: string[]
     back: string[]
