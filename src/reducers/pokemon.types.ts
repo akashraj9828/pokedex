@@ -10,7 +10,7 @@ export type PokemonDetails = {
   types: PokemonType[]
   images: {
     front: string[]
-    back: any[]
+    back: string[]
   }
 }
 

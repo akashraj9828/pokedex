@@ -6,7 +6,6 @@ import {
   setPokemonSpecies,
   setPokemonTypes,
 } from '@/reducers/pokemon'
-import { PokemonDetails } from '@/reducers/pokemon.types'
 import { Pokedex } from 'pokeapi-js-wrapper'
 
 // Only create client in browser
@@ -27,7 +26,7 @@ const getPokemonTypesList = async () => {
   return results
 }
 export const fetchPokemonTypesList = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(setPokemonTypes(await getPokemonTypesList()))
   }
 }
@@ -37,7 +36,7 @@ const getPokemonList = async () => {
   return results
 }
 export const fetchPokemonList = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(setPokemonList(await getPokemonList()))
   }
 }
@@ -47,7 +46,7 @@ const getPokemonListByType = async (pokemonType) => {
   return pokemon.map((pokemonData) => pokemonData.pokemon)
 }
 export const fetchPokemonListByType = (pokemonType) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(setPokemonList(await getPokemonListByType(pokemonType)))
   }
 }
@@ -56,7 +55,7 @@ const getPokemonByName = async (pokemonName) => {
   return await client.getPokemonByName(pokemonName)
 }
 export const fetchPokemonByName = (pokemonName) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(
       setPokemonDetails({
         [pokemonName]: {
@@ -72,50 +71,15 @@ export const fetchPokemonByName = (pokemonName) => {
       })
     )
     const data = await getPokemonByName(pokemonName)
-    const {
-      abilities,
-      base_experience,
-      forms,
-      game_indices,
-      height,
-      held_items,
-      id,
-      is_default,
-      location_area_encounters,
-      moves,
-      name,
-      order,
-      past_types,
-      species,
-      sprites,
-      stats,
-      types,
-      weight,
-    } = data
-    const {
-      back_default,
-      back_shiny,
-      front_default,
-      front_shiny,
-      back_female,
-      back_shiny_female,
-      front_female,
-      front_shiny_female,
-      other,
-    } = sprites
+    const { sprites } = data
+    const { other } = sprites
     const offical_artwork = other['official-artwork']
     const front = [
       offical_artwork.front_default,
-      // front_default,
-      // front_shiny,
-      // front_female,
-      // front_shiny_female,
       other.dream_world.front_default,
       other.home.front_default,
       other.home.front_female,
-      // other.home.front_shiny,
-      // other.home.front_shiny_female,
-    ].filter((e) => e)
+    ].filter((e): e is string => typeof e === 'string')
     const back = [
       // back_default,
       // back_shiny,
@@ -126,15 +90,9 @@ export const fetchPokemonByName = (pokemonName) => {
       setPokemonDetails({
         [pokemonName]: {
           loading: false,
-          id,
-          name,
-          weight,
-          height,
-          // forms,
-          stats,
-          types,
+          ...data,
           images: { front, back },
-        } as unknown as PokemonDetails,
+        },
       })
     )
   }
@@ -146,30 +104,13 @@ const getPokemonSpeciesByName = async (speciesName) => {
   const {
     base_happiness,
     capture_rate,
-    color,
-    egg_groups,
-    evolution_chain,
-    evolves_from_species,
-    flavor_text_entries,
-    form_descriptions,
     forms_switchable,
-    gender_rate,
-    genera,
-    generation,
-    growth_rate,
-    habitat,
     has_gender_differences,
-    hatch_counter,
-    id,
     is_baby,
     is_legendary,
     is_mythical,
     name,
     names,
-    order,
-    pal_park_encounters,
-    pokedex_numbers,
-    shape,
     varieties,
   } = data
   const evolutionId =
@@ -189,7 +130,7 @@ const getPokemonSpeciesByName = async (speciesName) => {
   }
 }
 export const fetchPokemonSpeciesByName = (speciesName) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(
       setPokemonSpecies({
         [speciesName]: await getPokemonSpeciesByName(speciesName),
@@ -202,7 +143,7 @@ const getPokemonFormByName = async (formName) => {
   return await client.getPokemonFormByName(formName)
 }
 export const fetchPokemonFormByName = (formName) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(
       setPokemonDetails({ [formName]: await getPokemonFormByName(formName) })
     )
@@ -214,7 +155,7 @@ const getPokemonEvolutionById = async (evolutionId) => {
   return chain
 }
 export const fetchPokemonEvolutionById = (evolutionId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(
       setPokemonEvolutions({
         [evolutionId]: await getPokemonEvolutionById(evolutionId),
@@ -228,7 +169,7 @@ const getPokemonGenerationById = async (id) => {
   return generation
 }
 export const fetchPokemonGenerationById = (generationId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     return dispatch(
       setPokemonGeneration({
         [generationId]: await getPokemonGenerationById(generationId),

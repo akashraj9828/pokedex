@@ -4,6 +4,7 @@ import {
   Chain,
   Generation,
   NamedAPIResource,
+  Pokemon,
   PokemonForm,
 } from 'pokeapi-js-wrapper'
 
@@ -12,7 +13,9 @@ interface PokemonState {
   pokemon_types: NamedAPIResource[]
   pokemon_list: NamedAPIResource[]
   pokemon_details: {
-    [pokemon_name: string | number]: PokemonDetails | PokemonForm
+    [pokemon_name: string | number]: Partial<
+      (Pokemon | PokemonForm) & Pick<PokemonDetails, 'images' | 'loading'>
+    >
   }
   pokemon_evolutions: { [pokemon_id: string]: Chain }
   pokemon_species: { [pokemon_name: string]: PokemonSpeciesPartial }
