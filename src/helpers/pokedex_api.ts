@@ -66,7 +66,7 @@ export const fetchPokemonByName = (pokemonName) => {
           height: 0,
           stats: [],
           types: [],
-          images: { front: [], back: [] },
+          images: { front: [], back: [], showdown: [] },
         },
       })
     )
@@ -74,6 +74,11 @@ export const fetchPokemonByName = (pokemonName) => {
     const { sprites } = data
     const { other } = sprites
     const offical_artwork = other['official-artwork']
+    const _showdown = other['showdown']
+
+    const showdown = [_showdown.front_default, _showdown.front_shiny].filter(
+      (e): e is string => typeof e === 'string'
+    )
     const front = [
       offical_artwork.front_default,
       other.dream_world.front_default,
@@ -81,17 +86,17 @@ export const fetchPokemonByName = (pokemonName) => {
       other.home.front_female,
     ].filter((e): e is string => typeof e === 'string')
     const back = [
-      // back_default,
+      offical_artwork.back_default,
       // back_shiny,
       // back_female,
       // back_shiny_female,
-    ].filter((e) => e)
+    ].filter((e): e is string => typeof e === 'string')
     return dispatch(
       setPokemonDetails({
         [pokemonName]: {
           loading: false,
           ...data,
-          images: { front, back },
+          images: { front, back, showdown },
         },
       })
     )

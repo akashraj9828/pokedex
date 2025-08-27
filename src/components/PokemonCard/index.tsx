@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { getPokemonCardColor } from '@/constants/colors'
+import Link from 'next/link'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 interface PokemonCardProps {
   pokemonName: string
@@ -14,44 +14,12 @@ const PokemonCard = ({ pokemonName }: PokemonCardProps) => {
 
   // Move hooks to the top level
   const [currentImage, setCurrentImage] = useState(0)
-  const [hovering, setHovering] = useState(false)
-  const nextImage = () => {
-    const max = all_images.length
-    setCurrentImage((s) => {
-      if (s + 1 > max - 1) {
-        return 0
-      } else {
-        return s + 1
-      }
-    })
-  }
-  const {
-    loading,
-    name,
-    id,
-    weight,
-    height,
-    // forms,
-    stats,
-    types,
-    images,
-  } = poke_detail || {}
+
+  const { loading, name, id, types, images } = poke_detail || {}
 
   const all_images = [...(images?.front || []), ...(images?.back || [])]
   const pokemon_type = types?.[0]?.type?.name || 'normal'
   //   const image = `https://assets.poketwo.net/images/${id}.png`
-
-  useEffect(() => {
-    if (hovering) {
-      nextImage()
-    }
-    const handle = hovering ? setInterval(nextImage, 1000) : null
-    return () => {
-      if (handle) {
-        clearInterval(handle)
-      }
-    }
-  }, [hovering, all_images.length])
 
   // Add null check before destructuring
   if (!poke_detail) {

@@ -5,6 +5,7 @@ export type PokemonDetails = {
   images: {
     front: string[]
     back: string[]
+    showdown: string[]
   }
 }
 
