@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import TabContentContainer from './TabContentContainer'
 
 interface Stat {
   stat: {
@@ -56,16 +57,11 @@ const BaseStats = ({ stats }: BaseStatsProps) => {
   }
 
   return (
-    <>
-      <motion.h2
-        className="mb-6 text-4xl font-bold"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
-        Base stats:
-      </motion.h2>
-
+    <TabContentContainer
+      title="Base Stats"
+      showEmpty={!stats || stats.length === 0}
+      emptyMessage="No stats data available"
+    >
       <motion.div
         className="flex max-w-72 flex-wrap gap-2 gap-y-4 border-l-4 border-l-white/30 pl-6 leading-snug"
         variants={statsContainerVariants}
@@ -90,7 +86,7 @@ const BaseStats = ({ stats }: BaseStatsProps) => {
           )
         })}
       </motion.div>
-    </>
+    </TabContentContainer>
   )
 }
 

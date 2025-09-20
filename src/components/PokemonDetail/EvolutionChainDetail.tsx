@@ -7,6 +7,7 @@ import {
   fetchPokemonByName,
 } from '@/helpers/pokedex_api'
 import { Chain } from 'pokeapi-js-wrapper'
+import TabContentContainer from './TabContentContainer'
 
 interface EvolutionChainDetailProps {
   evolutionId: string | null
@@ -112,17 +113,13 @@ const EvolutionChainDetail = ({
 
   if (!evolutionChain) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+      <TabContentContainer
+        title="Evolution Chain"
+        isLoading={true}
+        loadingMessage="Loading evolution chain..."
       >
-        <div className="flex items-center justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-          <span className="ml-3 text-white">Loading evolution chain...</span>
-        </div>
-      </motion.div>
+        <></>
+      </TabContentContainer>
     )
   }
 
@@ -234,21 +231,12 @@ const EvolutionChainDetail = ({
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+    <TabContentContainer
+      title="Evolution Chain"
+      isLoading={evolutionSteps.length === 0}
+      loadingMessage="Loading Pokemon data..."
     >
-      <h3 className="mb-6 text-xl font-bold text-white">Evolution Chain</h3>
-
-      {evolutionSteps.length === 0 ? (
-        // Still loading Pokemon data for evolution steps
-        <div className="flex items-center justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-          <span className="ml-3 text-white">Loading Pokemon data...</span>
-        </div>
-      ) : evolutionSteps.length > 1 ? (
+      {evolutionSteps.length > 1 ? (
         <div className="space-y-8">
           {/* Regular Evolution Chain */}
           {evolutionSteps.length <= 4 ? (
@@ -344,7 +332,7 @@ const EvolutionChainDetail = ({
           <p className="text-white/80">This Pokémon does not evolve.</p>
         </div>
       )}
-    </motion.div>
+    </TabContentContainer>
   )
 }
 

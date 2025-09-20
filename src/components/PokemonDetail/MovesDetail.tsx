@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { MoveElement, Pokemon } from 'pokeapi-js-wrapper'
 import { useState, useMemo } from 'react'
+import TabContentContainer from './TabContentContainer'
 
 interface MovesDetailProps {
   moves: Pokemon['moves']
@@ -101,77 +102,71 @@ const MovesDetail = ({ moves }: MovesDetailProps) => {
 
   if (!moves || moves.length === 0) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+      <TabContentContainer
+        title="Moves"
+        showEmpty={true}
+        emptyMessage="No moves data available"
       >
-        <p className="text-center text-white/70">No moves data available</p>
-      </motion.div>
+        <></>
+      </TabContentContainer>
     )
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="space-y-4"
-    >
-      <h3 className="text-xl font-bold text-white">Moves</h3>
+  const headerControls = (
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search moves..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full rounded-lg bg-white/10 px-4 py-2 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/20 focus:outline-none"
+      />
+    </div>
+  )
 
-      {/* Controls */}
-      <div className="space-y-3">
-        {/* Search */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search moves..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg bg-white/10 px-4 py-2 text-white placeholder-white/50 backdrop-blur-sm focus:bg-white/20 focus:outline-none"
-          />
-        </div>
+  const filterButtons = (
+    <div className="mb-4 flex flex-wrap gap-2">
+      <button
+        onClick={() => setSelectedLearnMethod('all')}
+        className={`rounded-full px-3 py-1 text-sm font-medium transition-all ${
+          selectedLearnMethod === 'all'
+            ? 'bg-white text-gray-800'
+            : 'bg-white/20 text-white hover:bg-white/30'
+        }`}
+      >
+        All ({moves.length})
+      </button>
+      {learnMethods.map((method) => {
+        const count = moves.filter((move) =>
+          move.version_group_details.some(
+            (d) => d.move_learn_method.name === method
+          )
+        ).length
 
-        {/* Learn Method Filter */}
-        <div className="flex flex-wrap gap-2">
+        return (
           <button
-            onClick={() => setSelectedLearnMethod('all')}
+            key={method}
+            onClick={() => setSelectedLearnMethod(method)}
             className={`rounded-full px-3 py-1 text-sm font-medium transition-all ${
-              selectedLearnMethod === 'all'
+              selectedLearnMethod === method
                 ? 'bg-white text-gray-800'
                 : 'bg-white/20 text-white hover:bg-white/30'
             }`}
           >
-            All ({moves.length})
+            {formatLearnMethod(method)} ({count})
           </button>
-          {learnMethods.map((method) => {
-            const count = moves.filter((move) =>
-              move.version_group_details.some(
-                (d) => d.move_learn_method.name === method
-              )
-            ).length
+        )
+      })}
+    </div>
+  )
 
-            return (
-              <button
-                key={method}
-                onClick={() => setSelectedLearnMethod(method)}
-                className={`rounded-full px-3 py-1 text-sm font-medium transition-all ${
-                  selectedLearnMethod === method
-                    ? 'bg-white text-gray-800'
-                    : 'bg-white/20 text-white hover:bg-white/30'
-                }`}
-              >
-                {formatLearnMethod(method)} ({count})
-              </button>
-            )
-          })}
-        </div>
-      </div>
+  return (
+    <TabContentContainer title="Moves" headerRight={headerControls}>
+      <div className="space-y-4">
+        {/* Filter Buttons */}
+        {filterButtons}
 
-      {/* Moves List */}
-      <div className="rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+        {/* Moves List */}
         {filteredMoves.length === 0 ? (
           <p className="py-8 text-center text-white/70">
             No moves found matching your criteria
@@ -234,13 +229,13 @@ const MovesDetail = ({ moves }: MovesDetailProps) => {
             })}
           </div>
         )}
-      </div>
 
-      {/* Summary */}
-      <div className="text-center text-sm text-white/60">
-        Showing {filteredMoves.length} of {moves.length} moves
+        {/* Summary */}
+        <div className="text-center text-sm text-white/60">
+          Showing {filteredMoves.length} of {moves.length} moves
+        </div>
       </div>
-    </motion.div>
+    </TabContentContainer>
   )
 }
 
